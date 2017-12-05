@@ -9,6 +9,9 @@ import { CoreModule } from './core/core.module';
 import { FormsModule } from '@angular/forms';
 import { EventsComponent } from './events/events/events.component';
 import { EventService } from './events/event.service';
+import { AppRoutingModule } from './/app-routing.module';
+import { UserProfileComponent } from './users/user-profile/user-profile.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   imports: [
@@ -17,9 +20,10 @@ import { EventService } from './events/event.service';
     MatButtonModule, MatInputModule, MatCardModule, MatToolbarModule, MatListModule, // imports components to be used from angular-material
     AngularFireModule.initializeApp(environment.firebase, 'triathlon-club'), // imports firebase/app needed for everything
     CoreModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule
   ],
-  declarations: [ AppComponent, EventsComponent ],
+  declarations: [ AppComponent, EventsComponent, UserProfileComponent, LoginComponent ],
   bootstrap: [ AppComponent ],
   providers: [ EventService ]
 })
