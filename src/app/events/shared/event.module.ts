@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material';
 
 import { EventService } from './event.service';
 import { EventsListComponent } from '../events-list/events-list.component';
+import { EventDetailComponent } from '../event-detail/event-detail.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { EventsListComponent } from '../events-list/events-list.component';
   ],
   declarations: [
     EventsListComponent,
+    EventDetailComponent
   ],
   providers: [
     EventService,
