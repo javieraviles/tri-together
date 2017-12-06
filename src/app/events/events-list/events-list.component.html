@@ -1,4 +1,11 @@
+<input [(ngModel)]="name" placeholder="Name of the event" class="input">
+
+<button class="button is-success" (click)="createEvent()" [disabled]="name?.length < 2 || name?.length > 60">
+  Add Event
+</button>
+
 <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
 <div *ngFor="let event of events | async"> 
   <event-detail [event]="event"></event-detail>
 </div>

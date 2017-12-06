@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import { SharedModule } from '../../shared/shared.module';
 import { MatCardModule } from '@angular/material';
@@ -13,9 +14,10 @@ import { EventDetailComponent } from '../event-detail/event-detail.component';
 @NgModule({
   imports: [
     CommonModule,
-    AngularFireDatabaseModule,
+    AngularFirestoreModule,
     SharedModule,
-    MatCardModule
+    MatCardModule,
+    FormsModule
   ],
   declarations: [
     EventsListComponent,
