@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 import * as firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
@@ -20,7 +21,8 @@ export class AuthService {
   user: Observable<User>;
 
   constructor(private afAuth: AngularFireAuth,
-              private afs: AngularFirestore) { 
+              private afs: AngularFirestore,
+              private router: Router) { 
 
     this.user = this.afAuth.authState
       .switchMap(user => {
@@ -44,11 +46,14 @@ export class AuthService {
     return this.afAuth.auth.signInWithEmailAndPassword(email,password)
       .then((user) => {
         this.updateUserData(user)
+        this.router.navigate(['/events'])
       })
   }
 
   private signOut() {
-    return this.afAuth.auth.signOut();
+    return this.afAuth.auth.signOut().then(() => {
+      this.router.navigate(['/login'])
+    });
   }
 
   // Sets user data to firestore after succesful login
