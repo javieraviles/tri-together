@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  firebase: {
+  firebaseConfig: {
     apiKey: "AIzaSyB5p8KAn8un-Wwc5-OPmNNfSBuNyOKPatk",
     authDomain: "triathlon-club.firebaseapp.com",
     databaseURL: "https://triathlon-club.firebaseio.com",

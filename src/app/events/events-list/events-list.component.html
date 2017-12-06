@@ -1,0 +1,6 @@
+<loading-spinner *ngIf="showSpinner"></loading-spinner>
+<mat-card *ngFor="let event of events | async"> 
+  <mat-card-title>
+    {{event | json}}
+  </mat-card-title>
+</mat-card>

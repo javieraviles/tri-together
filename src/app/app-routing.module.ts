@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { EventsComponent } from './events/events/events.component';
+import { EventsListComponent } from './events/events-list/events-list.component';
 import { UserProfileComponent } from './users/user-profile/user-profile.component';
 import { LoginComponent } from './login/login.component';
 
@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/events', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard] },
-  { path: 'events', component: EventsComponent, canActivate: [AuthGuard] }
+  { path: 'events', component: EventsListComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
