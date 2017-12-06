@@ -12,6 +12,8 @@ export class EventsComponent implements OnInit {
 
   events: Event[];
 
+  showSpinner: boolean = true;
+
   constructor(private eventService: EventService) { }
 
   ngOnInit() {
@@ -20,7 +22,10 @@ export class EventsComponent implements OnInit {
 
   getEvents(): void {
     this.eventService.getEvents()
-        .subscribe(events => this.events = events);
+        .subscribe( (events) => { 
+          this.events = events;
+          this.showSpinner = false;
+        });
   }
 
 }

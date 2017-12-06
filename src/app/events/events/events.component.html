@@ -1,8 +1,6 @@
-<mat-card>
+<app-loading-spinner *ngIf="showSpinner"></app-loading-spinner>
+<mat-card *ngFor="let event of events"> 
   <mat-card-title>
-    Events
+    {{event.name}}
   </mat-card-title>
-  <mat-list>
-    <mat-list-item *ngFor="let event of events"> {{event.name}} </mat-list-item>
-  </mat-list>
 </mat-card>
