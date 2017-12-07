@@ -1,34 +1,37 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatInputModule, MatCardModule, MatToolbarModule, MatProgressSpinnerModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule, MatToolbarModule} from '@angular/material';
 
 import { AppRoutingModule } from './/app-routing.module';
-import { AngularFireModule } from 'angularfire2';
 import { environment } from '../environments/environment';
 
+import { AngularFireModule } from 'angularfire2';
+export const firebaseConfig = environment.firebaseConfig;
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+
 import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
-import { EventsComponent } from './events/events/events.component';
-import { EventService } from './events/event.service';
-import { UserProfileComponent } from './users/user-profile/user-profile.component';
-import { LoginComponent } from './login/login.component';
-import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { EventModule } from './events/shared/event.module';
+import { UiModule } from './ui/shared/ui.module';
 
 
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MatButtonModule, MatInputModule, MatCardModule, MatToolbarModule, MatProgressSpinnerModule, // imports components to be used from angular-material
-    AngularFireModule.initializeApp(environment.firebase, 'triathlon-club'), // imports firebase/app needed for everything
+    MatButtonModule, MatToolbarModule,
+    AngularFireModule.initializeApp(firebaseConfig, 'triathlon-club'),
     CoreModule,
+    AppRoutingModule,
+    SharedModule,
+    EventModule,
     FormsModule,
-    AppRoutingModule
+    UiModule
   ],
-  declarations: [ AppComponent, EventsComponent, UserProfileComponent, LoginComponent, LoadingSpinnerComponent ],
-  bootstrap: [ AppComponent ],
-  providers: [ EventService ]
+  declarations: [ AppComponent ],
+  bootstrap: [ AppComponent ]
 })
 export class AppModule {}

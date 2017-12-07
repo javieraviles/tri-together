@@ -46,7 +46,6 @@ export class AuthService {
     return this.afAuth.auth.signInWithEmailAndPassword(email,password)
       .then((user) => {
         this.updateUserData(user)
-        this.router.navigate(['/events'])
       })
   }
 
