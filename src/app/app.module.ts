@@ -11,6 +11,8 @@ import { AngularFireModule } from 'angularfire2';
 export const firebaseConfig = environment.firebaseConfig;
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 
+import { MessagingService } from "./messaging.service";
+
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
@@ -23,7 +25,7 @@ import { UiModule } from './ui/shared/ui.module';
     BrowserModule,
     BrowserAnimationsModule,
     MatButtonModule, MatToolbarModule,
-    AngularFireModule.initializeApp(firebaseConfig, 'triathlon-club'),
+    AngularFireModule.initializeApp(firebaseConfig),
     CoreModule,
     AppRoutingModule,
     SharedModule,
@@ -32,6 +34,7 @@ import { UiModule } from './ui/shared/ui.module';
     UiModule
   ],
   declarations: [ AppComponent ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [ AppComponent ],
+  providers: [ MessagingService ]
 })
 export class AppModule {}

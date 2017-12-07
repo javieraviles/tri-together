@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { MatProgressSpinnerModule } from '@angular/material';
 
-
 import { LoadingSpinnerComponent } from '../ui/loading-spinner/loading-spinner.component';
 
 @NgModule({
