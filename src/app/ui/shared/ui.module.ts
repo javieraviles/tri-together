@@ -4,8 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatButtonModule, MatInputModule, MatCardModule } from '@angular/material';
-
 import { SharedModule } from '../../shared/shared.module';
 
 import { UserLoginComponent } from '../user-login/user-login.component';
@@ -17,8 +15,7 @@ import { UserProfileComponent } from '../user-profile/user-profile.component';
     SharedModule,
     FormsModule,
     RouterModule,
-    BrowserAnimationsModule,
-    MatButtonModule, MatInputModule, MatCardModule
+    BrowserAnimationsModule
   ],
   declarations: [
     UserLoginComponent, UserProfileComponent

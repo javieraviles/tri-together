@@ -1,10 +1,16 @@
-<mat-card *ngIf="auth.user | async as user">
-    <mat-card-header>
-      <img mat-card-avatar [src]="user.photoURL">
-      <mat-card-title> {{user.displayName}} </mat-card-title>
-      <mat-card-subtitle> {{user.email}} </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-actions>
-      <button (click)="auth.signOut()" mat-button>Logout</button>
-    </mat-card-actions>
-  </mat-card>
+<div class="row" *ngIf="auth.user | async as user">
+  <div class="col s12 m12">
+    <div class="card small">
+      <div class="card-image">
+        <img [src]="user.photoURL">
+        <span class="card-title">{{user.displayName}}</span>
+      </div>
+      <div class="card-content">
+        <p>{{user.email}}</p>
+      </div>
+      <div class="card-action">
+        <a (click)="auth.signOut()">Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
