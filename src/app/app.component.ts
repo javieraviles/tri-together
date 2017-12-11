@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from './core/auth.service';
 import { MessagingService } from "./messaging.service";
@@ -8,16 +8,13 @@ import { MessagingService } from "./messaging.service";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-
-  message;
+export class AppComponent implements OnInit  {
 
   constructor(private auth: AuthService, private msgService: MessagingService) {}
   
   ngOnInit() {
     this.msgService.getPermission()
     this.msgService.receiveMessage()
-    this.message = this.msgService.currentMessage
   }
 
 }

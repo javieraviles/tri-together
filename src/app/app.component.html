@@ -1,12 +1,11 @@
-<div class="navbar-fixed">
+<div class="navbar-fixed" *ngIf="auth.user | async">
   <nav class="nav-extended">
     <div class="nav-content">
       <ul class="tabs tabs-transparent">
-        <li class="tab"><a *ngIf="auth.user | async" routerLink="/events" >Events</a></li>
-        <li class="tab"><a *ngIf="auth.user | async" routerLink="/profile">Profile</a></li>
+        <li class="tab"><a routerLink="/events" class="active">Events</a></li>
+        <li class="tab"><a routerLink="/profile">Profile</a></li>
       </ul>
     </div>
   </nav>
 </div>
-{{ message | async | json }}
 <router-outlet></router-outlet>

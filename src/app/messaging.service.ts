@@ -42,6 +42,7 @@ export class MessagingService {
        this.messaging.onMessage((payload) => {
         console.log("Message received. ", payload);
         this.currentMessage.next(payload)
+        Materialize.toast(JSON.stringify(this.currentMessage.value.notification), 4000);
       });
     }
 
