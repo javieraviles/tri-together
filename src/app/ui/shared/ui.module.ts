@@ -6,8 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatButtonModule, MatInputModule, MatCardModule, MatDialogModule } from '@angular/material';
 
-import { SharedModule } from '../../shared/shared.module';
-
 import { UserLoginComponent } from '../user-login/user-login.component';
 import { UserProfileComponent } from '../user-profile/user-profile.component';
 import { NotificationDialogComponent } from '../notification-dialog/notification-dialog.component';
@@ -15,7 +13,6 @@ import { NotificationDialogComponent } from '../notification-dialog/notification
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
     FormsModule,
     RouterModule,
     BrowserAnimationsModule,
