@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Event } from './event';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
@@ -8,7 +8,6 @@ import { map } from 'rxjs/operators';
 export class EventService {
 
   eventsCollection: AngularFirestoreCollection<Event>;
-  eventDocument:   AngularFirestoreDocument<Event>;
 
   constructor(private afs: AngularFirestore) {
     this.eventsCollection = this.afs.collection<Event>('events', (ref) => ref.orderBy('createdAt', 'desc'));
@@ -33,7 +32,7 @@ export class EventService {
   }
 
   createEvent(name: string) {
-    const event = {
+    const event: Event = {
       name,
       createdAt: new Date(),
     };
