@@ -8,7 +8,10 @@ import { MessagingService } from "./messaging.service";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent implements OnInit  {
+  
+  title = 'Triathlon club';
 
   constructor(private auth: AuthService, private msgService: MessagingService) {}
   

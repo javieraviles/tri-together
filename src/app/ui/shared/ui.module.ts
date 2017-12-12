@@ -4,10 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { MatButtonModule, MatInputModule, MatCardModule, MatDialogModule } from '@angular/material';
+
 import { SharedModule } from '../../shared/shared.module';
 
 import { UserLoginComponent } from '../user-login/user-login.component';
 import { UserProfileComponent } from '../user-profile/user-profile.component';
+import { NotificationDialogComponent } from '../notification-dialog/notification-dialog.component';
 
 @NgModule({
   imports: [
@@ -15,10 +18,12 @@ import { UserProfileComponent } from '../user-profile/user-profile.component';
     SharedModule,
     FormsModule,
     RouterModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatButtonModule, MatInputModule, MatCardModule, MatDialogModule
   ],
   declarations: [
-    UserLoginComponent, UserProfileComponent
-  ]
+    UserLoginComponent, UserProfileComponent, NotificationDialogComponent
+  ],
+  entryComponents: [ NotificationDialogComponent ]
 })
 export class UiModule { }

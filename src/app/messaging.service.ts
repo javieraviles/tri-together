@@ -5,13 +5,16 @@ import * as firebase from 'firebase';
 import 'rxjs/add/operator/take';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { NotificationDialogComponent } from './ui/notification-dialog/notification-dialog.component';
+
 @Injectable()
 export class MessagingService {
 
   messaging = firebase.messaging()
   currentMessage = new BehaviorSubject(null)
 
-  constructor(private afs: AngularFirestore, private afAuth: AngularFireAuth) { }
+  constructor(private afs: AngularFirestore, private afAuth: AngularFireAuth, public dialog: MatDialog) { }
 
   updateToken(token) {
     this.afAuth.authState.take(1).subscribe(user => {
@@ -42,8 +45,20 @@ export class MessagingService {
        this.messaging.onMessage((payload) => {
         console.log("Message received. ", payload);
         this.currentMessage.next(payload)
-        Materialize.toast(JSON.stringify(this.currentMessage.value.notification), 4000);
+        this.openDialog(this.currentMessage.value.notification)
       });
+    }
+
+    openDialog(message): void {
+      let dialogRef = this.dialog.open(NotificationDialogComponent, {
+        width: '250px',
+        data: { title: message.title, body: message.body }
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed with result: ' + result);
+      });
+  
     }
 
 }
