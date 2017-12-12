@@ -14,7 +14,6 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { MessagingService } from "./messaging.service";
 
 import { CoreModule } from './core/core.module';
-import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
 import { EventModule } from './events/shared/event.module';
 import { UiModule } from './ui/shared/ui.module';
@@ -29,7 +28,6 @@ import { UiModule } from './ui/shared/ui.module';
     AngularFirestoreModule.enablePersistence(),
     CoreModule,
     AppRoutingModule,
-    SharedModule,
     EventModule,
     FormsModule,
     UiModule

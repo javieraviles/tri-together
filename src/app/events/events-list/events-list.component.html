@@ -5,8 +5,6 @@
   Add Event
 </button>
 
-<loading-spinner *ngIf="showSpinner"></loading-spinner>
-
 <div *ngFor="let event of events | async"> 
   <event-detail [event]="event"></event-detail>
 </div>

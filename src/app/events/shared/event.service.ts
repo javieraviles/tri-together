@@ -11,14 +11,14 @@ export class EventService {
   eventDocument:   AngularFirestoreDocument<Event>;
 
   constructor(private afs: AngularFirestore) {
-    this.eventsCollection = this.afs.collection('events');
+    this.eventsCollection = this.afs.collection<Event>('events', (ref) => ref.orderBy('createdAt', 'desc'));
   }
 
   getEvents(): Observable<Event[]> {
     return this.eventsCollection.valueChanges();
   }
 
-  getEventsFull(): Observable<Event[]> {
+  getEventsWithMetaInfo(): Observable<Event[]> {
     // ['added', 'modified', 'removed']
     return this.eventsCollection.snapshotChanges().map((actions) => {
       return actions.map((a) => {

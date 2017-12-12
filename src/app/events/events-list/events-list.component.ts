@@ -14,16 +14,11 @@ export class EventsListComponent implements OnInit {
 
   events: Observable<Event[]>;
   name: string;
-  showSpinner: boolean = true;
 
   constructor(private eventService: EventService) { }
 
   ngOnInit() {
-    this.events = this.eventService.getEventsFull();
-
-    this.events.subscribe((x) => {
-      this.showSpinner = false;
-    });
+    this.events = this.eventService.getEventsWithMetaInfo();
   }
 
   createEvent() {
