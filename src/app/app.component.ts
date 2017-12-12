@@ -13,6 +13,11 @@ export class AppComponent implements OnInit  {
   
   title = 'Triathlon club';
 
+  navLinks = [
+    { path: '/events', label: 'Events' },
+    { path: '/profile', label: 'Profile' }
+  ]
+
   constructor(private auth: AuthService, private msgService: MessagingService) {}
   
   ngOnInit() {

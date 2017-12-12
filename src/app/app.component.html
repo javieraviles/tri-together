@@ -1,9 +1,12 @@
 <div>
-  <mat-toolbar color="primary">
-    <span>{{ title }}</span>
-    <span class="fill-remaining-space"></span>
-    <button *ngIf="auth.user | async" mat-button routerLink="/events">Events</button>
-    <button *ngIf="auth.user | async" mat-button routerLink="/profile">Profile</button>
-  </mat-toolbar>
+  <nav *ngIf="auth.user | async" mat-tab-nav-bar>
+    <a mat-tab-link
+        *ngFor="let link of navLinks"
+        [routerLink]="link.path"
+        routerLinkActive #rla="routerLinkActive"
+        [active]="rla.isActive">
+      {{link.label}}
+    </a>
+  </nav>
   <router-outlet></router-outlet>
 </div>
