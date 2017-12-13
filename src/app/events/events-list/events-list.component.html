@@ -1,11 +1,5 @@
-<event-form></event-form>
-
 <div *ngFor="let event of events | async"> 
   <event-detail [event]="event"></event-detail>
 </div>
 
-<button mat-fab style="top: auto;
-right: 20px;
-bottom: 20px;
-left: auto;
-position: fixed;" ><i class="material-icons">add</i></button>
+<button mat-fab (click)="openEventFormDialog()" class="fab-bottom-right"><i class="material-icons">add</i></button>

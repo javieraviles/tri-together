@@ -4,7 +4,13 @@ import { FormsModule } from '@angular/forms';
 
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 
-import { MatCardModule, MatButtonModule, MatInputModule, MatSlideToggleModule, MatFormFieldModule, MatSnackBarModule } from '@angular/material';
+import { MatCardModule, 
+  MatButtonModule, 
+  MatInputModule, 
+  MatSlideToggleModule, 
+  MatFormFieldModule, 
+  MatSnackBarModule, 
+  MatDialogModule } from '@angular/material';
 
 import { EventService } from './event.service';
 import { ParticipantService } from './participant.service';
@@ -16,7 +22,13 @@ import { EventFormComponent } from '../event-form/event-form.component';
   imports: [
     CommonModule,
     AngularFirestoreModule,
-    MatCardModule, MatButtonModule, MatInputModule, MatSlideToggleModule, MatFormFieldModule, MatSnackBarModule,
+    MatCardModule, 
+    MatButtonModule, 
+    MatInputModule, 
+    MatSlideToggleModule, 
+    MatFormFieldModule, 
+    MatSnackBarModule, 
+    MatDialogModule,
     FormsModule
   ],
   declarations: [
@@ -26,6 +38,9 @@ import { EventFormComponent } from '../event-form/event-form.component';
   ],
   providers: [
     EventService, ParticipantService
+  ],
+  entryComponents: [
+    EventFormComponent
   ],
 })
 export class EventModule { }

@@ -1,0 +1,9 @@
+.event-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.form-field-full-width {
+    width: 100%;
+}

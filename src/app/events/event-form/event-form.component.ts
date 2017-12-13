@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialogRef } from '@angular/material';
 
 import { Event } from '../shared/event';
 
@@ -15,7 +15,10 @@ export class EventFormComponent {
 
   event: Event = new Event();
 
-  constructor(private eventService: EventService, public snackBar: MatSnackBar) { }
+  constructor(
+    private eventService: EventService, 
+    public snackBar: MatSnackBar, 
+    public dialogRef: MatDialogRef<EventFormComponent>) { }
 
   createEvent() {
     this.eventService.createEvent(this.event).then( () => {
@@ -24,6 +27,11 @@ export class EventFormComponent {
         duration: 3000,
       });
     });
+    this.closeDialog();
+  }
+
+  closeDialog(): void {
+    this.dialogRef.close();
   }
 
 }

@@ -45,7 +45,7 @@ export class EventDetailComponent implements OnInit {
     let undoTriggered: boolean = false;
 
     this.eventService.deleteEvent(id).then( () => {
-      
+
       let snackBarRef = this.snackBar.open("Event deleted", "undo", {
         duration: 3000,
       });
