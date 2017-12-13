@@ -13,17 +13,11 @@ import { Observable } from 'rxjs/Observable';
 export class EventsListComponent implements OnInit {
 
   events: Observable<Event[]>;
-  name: string;
 
   constructor(private eventService: EventService) { }
 
   ngOnInit() {
     this.events = this.eventService.getEventsWithMetaInfo();
-  }
-
-  createEvent() {
-    this.eventService.createEvent(this.name);
-    this.name = '';
   }
 
 }

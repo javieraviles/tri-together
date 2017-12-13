@@ -1,9 +1,4 @@
-<mat-form-field>
-  <input [(ngModel)]="name" matInput placeholder="Name of the event" required>
-</mat-form-field>
-<button (click)="createEvent()" mat-raised-button color="primary" [disabled]="name?.length < 2 || name?.length > 60">
-  Add Event
-</button>
+<event-form></event-form>
 
 <div *ngFor="let event of events | async"> 
   <event-detail [event]="event"></event-detail>

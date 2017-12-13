@@ -10,6 +10,7 @@ import { EventService } from './event.service';
 import { ParticipantService } from './participant.service';
 import { EventsListComponent } from '../events-list/events-list.component';
 import { EventDetailComponent } from '../event-detail/event-detail.component';
+import { EventFormComponent } from '../event-form/event-form.component';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { EventDetailComponent } from '../event-detail/event-detail.component';
   ],
   declarations: [
     EventsListComponent,
-    EventDetailComponent
+    EventDetailComponent,
+    EventFormComponent
   ],
   providers: [
     EventService, ParticipantService

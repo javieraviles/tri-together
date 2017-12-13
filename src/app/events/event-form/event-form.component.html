@@ -1,0 +1,22 @@
+<h3>New Event Form</h3>
+
+<label class="label">Name: </label>
+
+<input placeholder="Event Name" class="input"
+[(ngModel)]="event.name"
+required minlength="3" maxlength="50"
+#name='ngModel' autofocus>
+
+<div *ngIf="name.dirty">
+  <span *ngIf='name.errors; then errors else valid'>template renders here...</span>
+</div>
+
+<button class="button is-primary" (click)='createEvent()' [disabled]="!name.valid">Create</button>
+
+<ng-template #valid>
+  <p class="help is-success">looks good!</p>
+</ng-template>
+
+<ng-template #errors>
+  <p class="help is-danger">form contains errors!</p>
+</ng-template>
