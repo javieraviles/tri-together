@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatTabsModule } from '@angular/material';
+import { MatButtonModule, MatTabsModule, MatToolbarModule } from '@angular/material';
 
 import { AppRoutingModule } from './/app-routing.module';
 import { environment } from '../environments/environment';
@@ -24,7 +24,7 @@ import { UiModule } from './ui/shared/ui.module';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MatButtonModule, MatTabsModule,
+    MatButtonModule, MatTabsModule, MatToolbarModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule.enablePersistence(),
     CoreModule,

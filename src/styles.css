@@ -3,6 +3,34 @@
 /* Angular-material: Including a theme is required to apply all of the core and theme styles to your application */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+.main-container {
+    position: absolute;
+    top: 48px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow-y: scroll;
+}
+
+.custom-toolbar {
+    padding: 0 !important;
+    height: 48px !important;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.half-width {
+    width: 50%;
+}
+
 .fab-bottom-right {
     top: auto;
     right: 20px;
