@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 
 import { Event } from '../shared/event';
 
@@ -14,11 +15,15 @@ export class EventFormComponent {
 
   event: Event = new Event();
 
-  constructor(private eventService: EventService) { }
+  constructor(private eventService: EventService, public snackBar: MatSnackBar) { }
 
   createEvent() {
-    this.eventService.createEvent(this.event);
-    this.event = new Event();
+    this.eventService.createEvent(this.event).then( () => {
+      this.event = new Event();
+      let snackBarRef = this.snackBar.open("Event created", "", {
+        duration: 3000,
+      });
+    });
   }
 
 }

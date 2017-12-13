@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 
 import { AuthService } from '../../core/auth.service';
 import { EventService } from '../shared/event.service';
@@ -22,7 +23,11 @@ export class EventDetailComponent implements OnInit {
   @Input()
   event: Event;
   
-  constructor(private auth: AuthService, private eventService: EventService, private participantService: ParticipantService) { }
+  constructor(
+    private auth: AuthService, 
+    private eventService: EventService, 
+    private participantService: ParticipantService, 
+    public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.auth.user.subscribe( user => {
@@ -36,8 +41,26 @@ export class EventDetailComponent implements OnInit {
   }
 
   deleteEvent(id: string) {
+
+    let undoTriggered: boolean = false;
+
     this.eventService.deleteEvent(id).then( () => {
-      this.participantService.deleteParticipants(id);
+      
+      let snackBarRef = this.snackBar.open("Event deleted", "undo", {
+        duration: 3000,
+      });
+
+      snackBarRef.onAction().subscribe(() => {
+        this.eventService.createEventWithId(this.event);
+        undoTriggered = true;
+      });
+
+      snackBarRef.afterDismissed().subscribe(() => {
+        if(!undoTriggered) {
+          this.participantService.deleteParticipants(id);
+        }
+      });
+      
     });
     
   }

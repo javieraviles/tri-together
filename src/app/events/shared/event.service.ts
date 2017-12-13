@@ -10,7 +10,8 @@ export class EventService {
   eventsCollection: AngularFirestoreCollection<Event>;
 
   constructor(private afs: AngularFirestore) {
-    this.eventsCollection = this.afs.collection<Event>('events', (ref) => ref.where('createdAt', '>', new Date()).orderBy('createdAt', 'desc'));
+    //this.eventsCollection = this.afs.collection<Event>('events', (ref) => ref.where('createdAt', '>', new Date()).orderBy('createdAt', 'desc'));
+    this.eventsCollection = this.afs.collection<Event>('events');
   }
 
   getEvents(): Observable<Event[]> {
@@ -34,9 +35,17 @@ export class EventService {
   createEvent(newEvent: Partial<Event>) {
     const event = {
       name: newEvent.name,
-      createdAt: new Date(),
+      createdAt: newEvent.createdAt ? newEvent.createdAt : new Date(),
     };
     return this.eventsCollection.add(event);
+  }
+
+  createEventWithId(newEvent: Event) {
+    const event = {
+      name: newEvent.name,
+      createdAt: newEvent.createdAt ? newEvent.createdAt : new Date(),
+    };
+    return this.eventsCollection.doc(newEvent.id).set(event);
   }
 
   updateEvent(id: string, event: Partial<Event>) {

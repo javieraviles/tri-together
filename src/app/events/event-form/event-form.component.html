@@ -1,22 +1,9 @@
-<h3>New Event Form</h3>
+<mat-form-field hintLabel="Max 50 characters">
+  <input matInput placeholder="Event Name"
+  [(ngModel)]="event.name"
+  required minlength="3" maxlength="50"
+  #name='ngModel' autofocus>
+  <mat-hint align="end">{{name.value?.length || 0}}/50</mat-hint>
+</mat-form-field>
 
-<label class="label">Name: </label>
-
-<input placeholder="Event Name" class="input"
-[(ngModel)]="event.name"
-required minlength="3" maxlength="50"
-#name='ngModel' autofocus>
-
-<div *ngIf="name.dirty">
-  <span *ngIf='name.errors; then errors else valid'>template renders here...</span>
-</div>
-
-<button class="button is-primary" (click)='createEvent()' [disabled]="!name.valid">Create</button>
-
-<ng-template #valid>
-  <p class="help is-success">looks good!</p>
-</ng-template>
-
-<ng-template #errors>
-  <p class="help is-danger">form contains errors!</p>
-</ng-template>
+<button mat-raised-button color="primary" (click)='createEvent()' [disabled]="!name.valid">Create</button>
