@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { NgClass } from '@angular/common';
 import { MatSnackBar } from '@angular/material';
 
 import { AuthService } from '../../core/auth.service';
@@ -46,7 +47,7 @@ export class EventDetailComponent implements OnInit {
 
     this.eventService.deleteEvent(id).then( () => {
 
-      let snackBarRef = this.snackBar.open("Event deleted", "undo", {
+      let snackBarRef = this.snackBar.open("Event deleted", "UNDO", {
         duration: 3000,
       });
 

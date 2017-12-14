@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatTabsModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule, MatTabsModule, MatToolbarModule, MAT_DATE_LOCALE } from '@angular/material';
 
 import { AppRoutingModule } from './/app-routing.module';
 import { environment } from '../environments/environment';
@@ -35,6 +35,6 @@ import { UiModule } from './ui/shared/ui.module';
   ],
   declarations: [ AppComponent ],
   bootstrap: [ AppComponent ],
-  providers: [ MessagingService ]
+  providers: [ MessagingService, {provide: MAT_DATE_LOCALE, useValue: 'en-GB'} ]
 })
 export class AppModule {}

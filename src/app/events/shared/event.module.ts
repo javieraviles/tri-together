@@ -10,7 +10,10 @@ import { MatCardModule,
   MatSlideToggleModule, 
   MatFormFieldModule, 
   MatSnackBarModule, 
-  MatDialogModule } from '@angular/material';
+  MatDialogModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatSelectModule } from '@angular/material';
 
 import { EventService } from './event.service';
 import { ParticipantService } from './participant.service';
@@ -29,6 +32,9 @@ import { EventFormComponent } from '../event-form/event-form.component';
     MatFormFieldModule, 
     MatSnackBarModule, 
     MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSelectModule,
     FormsModule
   ],
   declarations: [

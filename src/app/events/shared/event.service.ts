@@ -10,8 +10,24 @@ export class EventService {
   eventsCollection: AngularFirestoreCollection<Event>;
 
   constructor(private afs: AngularFirestore) {
-    //this.eventsCollection = this.afs.collection<Event>('events', (ref) => ref.where('createdAt', '>', new Date()).orderBy('createdAt', 'desc'));
+    //this.eventsCollection = this.afs.collection<Event>('events', (ref) => ref.where('start', '>', new Date()).orderBy('createdAt', 'desc'));
     this.eventsCollection = this.afs.collection<Event>('events');
+  }
+
+  buildEventForFirebase(newEvent: Partial<Event>) {
+    const event = {
+      name: newEvent.name,
+      discipline: newEvent.discipline, 
+      start: newEvent.start,
+      createdAt: newEvent.createdAt ? newEvent.createdAt : new Date()
+    }
+    if(newEvent.place) {
+      event['place'] = newEvent.place;
+    }
+    if(newEvent.description) {
+      event['description'] = newEvent.description;
+    }
+    return event;
   }
 
   getEvents(): Observable<Event[]> {
@@ -23,7 +39,15 @@ export class EventService {
     return this.eventsCollection.snapshotChanges().map((actions) => {
       return actions.map((a) => {
         const data = a.payload.doc.data() as Event;
-        return { id: a.payload.doc.id, name: data.name, createdAt: data.createdAt };
+        return { 
+          id: a.payload.doc.id, 
+          name: data.name, 
+          place: data.place, 
+          description: data.description, 
+          discipline: data.discipline, 
+          start: data.start, 
+          createdAt: data.createdAt 
+        };
       });
     });
   }
@@ -33,19 +57,11 @@ export class EventService {
   }
 
   createEvent(newEvent: Partial<Event>) {
-    const event = {
-      name: newEvent.name,
-      createdAt: newEvent.createdAt ? newEvent.createdAt : new Date(),
-    };
-    return this.eventsCollection.add(event);
+    return this.eventsCollection.add(this.buildEventForFirebase(newEvent));
   }
 
   createEventWithId(newEvent: Event) {
-    const event = {
-      name: newEvent.name,
-      createdAt: newEvent.createdAt ? newEvent.createdAt : new Date(),
-    };
-    return this.eventsCollection.doc(newEvent.id).set(event);
+    return this.eventsCollection.doc(newEvent.id).set(this.buildEventForFirebase(newEvent));
   }
 
   updateEvent(id: string, event: Partial<Event>) {

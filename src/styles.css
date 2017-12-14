@@ -31,10 +31,14 @@ body {
     width: 50%;
 }
 
+.cards-collection {
+    padding: 0 0 10px 0;
+}
+
 .fab-bottom-right {
     top: auto;
     right: 20px;
     bottom: 20px;
     left: auto;
     position: fixed !important;
-} 
+}
