@@ -4,13 +4,28 @@ import { Participant } from './participant';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 
+import { User } from '../../ui/shared/user';
+import { AuthService } from '../../core/auth.service';
+
 @Injectable()
 export class ParticipantService {
   
-    constructor(private afs: AngularFirestore) { }
-  
-    getParticipants(eventId: string): Observable<Participant[]> {
-      return this.afs.collection<Participant>('participants', ref => ref.where('eventId', '==', eventId)).valueChanges();
+    constructor(private afs: AngularFirestore, private auth: AuthService) { }
+
+    getParticipants(eventId: string): User[] {
+      
+      let users: User[] = [];
+      this.afs.collection<Participant>('participants', ref => ref.where('eventId', '==', eventId)).valueChanges().subscribe( participants => {
+        //Need to clean users before push them again, but there is an empty call in the subscriptor 
+        //for some reason; will come back here when i get more familiar with firestore
+        for (let participant of participants) {
+          this.auth.getUser(participant.userId).subscribe( user => {
+            users.push(user);
+          });
+        }
+      });
+      return users;
+      
     }
   
     isUserParticipating(userId: string, eventId: string): Observable<Participant> {

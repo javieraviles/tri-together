@@ -8,12 +8,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs/Observable';
 import { switchMap } from 'rxjs/operators';
 
-interface User {
-  uid: string;
-  email: string;
-  displayName?: string;
-  photoURL?: string;
-}
+import { User } from '../ui/shared/user';
 
 @Injectable()
 export class AuthService {
@@ -24,17 +19,16 @@ export class AuthService {
               private afs: AngularFirestore,
               private router: Router) { 
 
-    this.user = this.afAuth.authState
-      .switchMap(user => {
-        if (user) {
-          return this.afs.doc<User>(`users/${user.uid}`).valueChanges()
-        } else {
-          return Observable.of(null)
-        }
-      })
+  this.user = this.afAuth.authState
+    .switchMap(user => {
+      if (user) {
+        return this.getUser(user.uid);
+      } else {
+        return Observable.of(null);
+      }
+    })
   }
 
-  //// Email/Password Auth ////
   emailSignUp(email: string, password: string) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((user) => {
@@ -55,8 +49,7 @@ export class AuthService {
     });
   }
 
-  // Sets user data to firestore after succesful login
-  private updateUserData(user) {
+  private updateUserData(user: User) {
 
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
 
@@ -69,6 +62,10 @@ export class AuthService {
 
     return userRef.set(data)
 
+  }
+
+  getUser(userId: string) {
+    return this.afs.doc<User>(`users/${userId}`).valueChanges();
   }
 
 }

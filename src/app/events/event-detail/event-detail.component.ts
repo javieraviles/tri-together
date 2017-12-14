@@ -7,9 +7,7 @@ import { EventService } from '../shared/event.service';
 import { ParticipantService } from '../shared/participant.service';
 
 import { Event } from '../shared/event';
-import { Participant } from '../shared/participant';
-
-import { Observable } from 'rxjs/Observable';
+import { User } from '../../ui/shared/user';
 
 @Component({
   selector: 'event-detail',
@@ -20,6 +18,7 @@ export class EventDetailComponent implements OnInit {
 
   participate: boolean = false;
   userId: string;
+  participants: User[];
 
   @Input()
   event: Event;
@@ -39,6 +38,8 @@ export class EventDetailComponent implements OnInit {
         }
       });
     });
+
+    this.participants = this.participantService.getParticipants(this.event.id);
   }
 
   deleteEvent(id: string) {

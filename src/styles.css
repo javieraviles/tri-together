@@ -7,6 +7,7 @@ body {
     width: 100%;
     height: 100%;
     margin: 0;
+    background-color: #fafafa;
 }
 
 .main-container {
@@ -31,8 +32,8 @@ body {
     width: 50%;
 }
 
-.cards-collection {
-    padding: 0 0 10px 0;
+.top-buttom-padding {
+    padding: 6px 0 6px 0 !important;
 }
 
 .fab-bottom-right {
@@ -41,4 +42,12 @@ body {
     bottom: 20px;
     left: auto;
     position: fixed !important;
+}
+
+.mat-ink-bar {
+    background-color:rgba(250, 250, 250, 1) !important;
+}
+
+.mat-tab-link {
+    opacity:1 !important;
 }
