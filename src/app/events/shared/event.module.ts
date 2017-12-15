@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule  } from '@angular/forms';
 
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 
@@ -14,6 +14,7 @@ import { MatCardModule,
   MatDatepickerModule,
   MatNativeDateModule,
   MatSelectModule } from '@angular/material';
+import { MatNativeDatetimeModule, MatDatetimepickerModule } from '@mat-datetimepicker/core';
 
 import { EventService } from './event.service';
 import { ParticipantService } from './participant.service';
@@ -35,6 +36,8 @@ import { EventFormComponent } from '../event-form/event-form.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
+    MatNativeDatetimeModule,
+    MatDatetimepickerModule,
     FormsModule
   ],
   declarations: [
