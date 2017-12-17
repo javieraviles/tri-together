@@ -1,14 +1,13 @@
-<mat-toolbar class="custom-toolbar">
-  <nav backgroundColor="primary" *ngIf="auth.user | async" mat-tab-nav-bar class="full-width">
-    <a mat-tab-link class="half-width"
-        *ngFor="let link of navLinks"
-        [routerLink]="link.path"
-        routerLinkActive #rla="routerLinkActive"
-        [active]="rla.isActive">
-      {{link.label}}
-    </a>
-  </nav>
-</mat-toolbar>
+<nav backgroundColor="primary" *ngIf="auth.user | async" mat-tab-nav-bar class="full-width">
+  <a mat-tab-link class="half-width"
+      *ngFor="let link of navLinks"
+      [routerLink]="link.path"
+      routerLinkActive #rla="routerLinkActive"
+      [active]="rla.isActive">
+    {{link.label}}
+  </a>
+</nav>
+
 <div class="main-container">
   <router-outlet></router-outlet>
 </div>

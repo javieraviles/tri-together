@@ -5,7 +5,7 @@ import * as firebase from 'firebase';
 import 'rxjs/add/operator/take';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { NotificationDialogComponent } from './ui/notification-dialog/notification-dialog.component';
 
 @Injectable()
@@ -16,25 +16,30 @@ export class MessagingService {
 
   constructor(private afs: AngularFirestore, private afAuth: AngularFireAuth, public dialog: MatDialog) { }
 
+  createToken(token) {
+    this.afAuth.authState.take(1).subscribe(user => {
+      if (!user) return;
+      const data = { 'token': token }
+      this.afs.collection('fcmTokens').doc(user.uid).set(data)
+    })
+  }
+
   updateToken(token) {
     this.afAuth.authState.take(1).subscribe(user => {
       if (!user) return;
       const data = { 'token': token }
       this.afs.doc<any>(`fcmTokens/${user.uid}`).update(data);
-
-      //this.afs.collection('fcmTokens').doc(user.uid).set(data);
     })
   }
+  
 
-  getPermission() {
+  getPermission(isUserNew: boolean) {
       this.messaging.requestPermission()
       .then(() => {
-        console.log('Notification permission granted.');
         return this.messaging.getToken()
       })
       .then(token => {
-        console.log(token)
-        this.updateToken(token)
+        isUserNew ? this.createToken(token) : this.updateToken(token)
       })
       .catch((err) => {
         console.log('Unable to get permission to notify.', err);
@@ -43,7 +48,6 @@ export class MessagingService {
 
     receiveMessage() {
        this.messaging.onMessage((payload) => {
-        console.log("Message received. ", payload);
         this.currentMessage.next(payload)
         this.openDialog(this.currentMessage.value.notification)
       });
