@@ -18,7 +18,7 @@ export class EventDetailComponent implements OnInit {
 
   participate: boolean = false;
   userId: string;
-  participants: User[];
+  participants: User[] = [];
 
   @Input()
   event: Event;
@@ -39,7 +39,14 @@ export class EventDetailComponent implements OnInit {
       });
     });
 
-    this.participants = this.participantService.getParticipants(this.event.id);
+    this.getParticipants();
+
+  }
+
+  getParticipants() {
+    this.participantService.getParticipants(this.event.id).then( (participants) => {
+      this.participants = participants;
+    })
   }
 
   deleteEvent(id: string) {
@@ -74,6 +81,7 @@ export class EventDetailComponent implements OnInit {
       this.participantService.deleteParticipant(this.userId, this.event.id);
     }
     this.participate = participate;
+    this.getParticipants();
   }
 
 }

@@ -12,19 +12,18 @@ export class ParticipantService {
   
     constructor(private afs: AngularFirestore, private auth: AuthService) { }
 
-    getParticipants(eventId: string): User[] {
-      
+    getParticipants(eventId: string) {
       let users: User[] = [];
-      this.afs.collection<Participant>('participants', ref => ref.where('eventId', '==', eventId)).valueChanges().subscribe( participants => {
-        //Need to clean users before push them again, but there is an empty call in the subscriptor 
-        //for some reason; will come back here when i get more familiar with firestore
-        for (let participant of participants) {
-          this.auth.getUser(participant.userId).subscribe( user => {
-            users.push(user);
-          });
-        }
+      return new Promise<User[]>((resolve,reject) => {
+        this.afs.collection<Participant>('participants', ref => ref.where('eventId', '==', eventId)).valueChanges().take(1).subscribe( participants => {
+          for (let participant of participants) {
+            this.auth.getUser(participant.userId).take(1).subscribe((user) => {
+              users.push(user);
+            })
+          }
+          resolve(users);
+        });
       });
-      return users;
       
     }
   
