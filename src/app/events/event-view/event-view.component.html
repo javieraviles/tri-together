@@ -9,28 +9,29 @@
     </mat-slide-toggle>
 </mat-toolbar>
 
-<mat-card class="event-card"> 
-    <mat-card-header>
-        <img *ngIf="event.discipline" mat-card-avatar src="/assets/img/{{event.discipline}}.png">
-        <mat-card-title> {{event.name}} </mat-card-title>
-        <mat-card-subtitle> {{event.start | date:'EEEE, d MMM y, H:mm'}} </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-        <p><strong>{{event.place}}</strong> {{event.description}}</p>
-    </mat-card-content>
-</mat-card>
+<div class="event-view-container">
+    <mat-card class="event-card"> 
+        <mat-card-header>
+            <img *ngIf="event.discipline" mat-card-avatar src="/assets/img/{{event.discipline}}.png">
+            <mat-card-title> {{event.name}} </mat-card-title>
+            <mat-card-subtitle> {{event.start | date:'EEEE, d MMM y, H:mm'}} </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p><strong>{{event.place}}</strong> {{event.description}}</p>
+        </mat-card-content>
+    </mat-card>
 
-<mat-tab-group>
-    <mat-tab label="Participants">
-        <mat-card class="participant-card" *ngFor="let participant of participants"> 
-            <mat-card-header>
-                <img *ngIf="participant.photoURL" mat-card-avatar [src]="participant.photoURL">
-                <mat-card-title> {{participant.displayName}} </mat-card-title>
-                <mat-card-subtitle> {{participant.email}} </mat-card-subtitle>
-            </mat-card-header>
-        </mat-card>
-    </mat-tab>
-    <mat-tab label="Comments">
-    </mat-tab>
-</mat-tab-group>
-
+    <mat-tab-group>
+        <mat-tab label="Participants">
+            <mat-card class="participant-card" *ngFor="let participant of participants"> 
+                <mat-card-header>
+                    <img *ngIf="participant.photoURL" mat-card-avatar [src]="participant.photoURL">
+                    <mat-card-title> {{participant.displayName}} </mat-card-title>
+                    <mat-card-subtitle> {{participant.email}} </mat-card-subtitle>
+                </mat-card-header>
+            </mat-card>
+        </mat-tab>
+        <mat-tab label="Comments">
+        </mat-tab>
+    </mat-tab-group>
+</div>

@@ -1,4 +1,6 @@
 .mat-dialog-content {
-  padding:24px;
-  margin:0px;
+  padding: 24px;
+  margin: 0px;
+  max-height: none;
+  height: calc(100vh - 96px);
 }

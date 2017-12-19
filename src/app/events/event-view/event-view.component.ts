@@ -14,7 +14,7 @@ import { User } from '../../ui/shared/user';
 @Component({
   selector: 'app-event-view',
   templateUrl: './event-view.component.html',
-  styleUrls: ['./event-view.component.scss']
+  styleUrls: ['./event-view.component.css']
 })
 export class EventViewComponent implements OnInit {
 

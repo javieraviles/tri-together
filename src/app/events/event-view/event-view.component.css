@@ -1,6 +1,12 @@
 .event-card {
     margin-bottom:10px;
 }
+
 .participant-card {
     padding: 10px 24px 0px 24px;
+}
+
+.event-view-container {
+    height: calc(100vh - 48px);
+    overflow-y: auto;
 }
