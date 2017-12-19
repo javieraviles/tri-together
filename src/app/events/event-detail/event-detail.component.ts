@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { MatSnackBar } from '@angular/material';
 
 import { AuthService } from '../../core/auth.service';
