@@ -26,7 +26,7 @@ export class EventsListComponent implements OnInit {
 
   openEventFormDialog(): void {
     this.dialog.open(EventFormComponent, {
-      width: '500px'
+      panelClass: 'full-screen-dialog'
     });
   }
 

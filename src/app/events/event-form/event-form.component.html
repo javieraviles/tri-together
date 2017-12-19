@@ -1,68 +1,55 @@
-<h1 mat-dialog-title>New Event</h1>
+<mat-toolbar color="primary">
+  <button mat-button (click)='closeDialog()' tabindex="-1"><i class="material-icons">arrow_back</i></button>
+  <span>Event</span>
+  <span class="toolbar-spacer"></span>
+  <button mat-button (click)='createEvent()' [disabled]="!name.valid" tabindex="5">Save</button>
+</mat-toolbar>
+
 <div mat-dialog-content>
-  <form class="event-form">
+  <form>
     
-    <table class="full-width" cellspacing="0">
-      <tr>
-        <td>
-          <mat-form-field class="full-width">
-            <input matInput tabindex="1" placeholder="Name"
-              name="name"
-              [(ngModel)]="event.name"
-              required minlength="3" maxlength="50"
-              #name='ngModel' autofocus>
-            <mat-hint align="end">{{name.value?.length || 0}}/50</mat-hint>
-          </mat-form-field>
-        </td>
-        <td>
-          <mat-form-field class="full-width">
-            <input matInput tabindex="2" placeholder="Place"
-              name="place"
-              [(ngModel)]="event.place"
-              minlength="3" maxlength="50"
-              #place='ngModel'>
-            <mat-hint align="end">{{place.value?.length || 0}}/50</mat-hint>
-          </mat-form-field>
-        </td>
-      </tr>
-    </table>
+
+    <mat-form-field class="full-width">
+      <input matInput tabindex="1" placeholder="Title your event"
+        name="name"
+        [(ngModel)]="event.name"
+        required minlength="3" maxlength="50"
+        #name='ngModel' autofocus>
+      <mat-hint align="end">{{name.value?.length || 0}}/50</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <input matInput tabindex="2" placeholder="Where"
+        name="place"
+        [(ngModel)]="event.place"
+        minlength="3" maxlength="50"
+        #place='ngModel'>
+      <mat-hint align="end">{{place.value?.length || 0}}/50</mat-hint>
+    </mat-form-field>
 
     <mat-form-field class="full-width">
       <textarea tabindex="3" matInput name="description"
         [(ngModel)]="event.description" #description='ngModel' 
-        placeholder="Description" minlength="0" maxlength="250" 
+        placeholder="Add a description" minlength="0" maxlength="250" 
         matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5">
       </textarea>
       <mat-hint align="end">{{description.value?.length || 0}}/250</mat-hint>
     </mat-form-field>
 
-    <table class="full-width" cellspacing="0">
-        <tr>
-          <td>
-            <mat-form-field class="full-width">
-              <mat-select name="discipline" [(ngModel)]="event.discipline" placeholder="Discipline" tabindex="4" required>
-                <mat-option *ngFor="let discipline of disciplines" [value]="discipline.value">
-                  {{ discipline.label }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </td>
-          <td>
-            <mat-form-field class="full-width">
-              <mat-placeholder>Start DateTime</mat-placeholder>
-              <mat-datetimepicker-toggle [for]="datetimePicker" matSuffix></mat-datetimepicker-toggle>
-              <mat-datetimepicker #datetimePicker type="datetime" openOnFocus="true" timeInterval="5"></mat-datetimepicker>
-              <input matInput tabindex="5" [(ngModel)]="event.start" name="start" [matDatetimepicker]="datetimePicker" required autocomplete="false">
-            </mat-form-field>
-          </td>
-        </tr>
-      </table>
-
-      
+    <mat-form-field class="full-width">
+      <mat-select name="discipline" [(ngModel)]="event.discipline" placeholder="Select Discipline" tabindex="4" required>
+        <mat-option *ngFor="let discipline of disciplines" [value]="discipline.value">
+          {{ discipline.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <mat-form-field class="full-width">
+      <mat-placeholder>Start DateTime</mat-placeholder>
+      <mat-datetimepicker-toggle [for]="datetimePicker" matSuffix></mat-datetimepicker-toggle>
+      <mat-datetimepicker #datetimePicker type="datetime" openOnFocus="true" timeInterval="5"></mat-datetimepicker>
+      <input matInput tabindex="5" [(ngModel)]="event.start" name="start" [matDatetimepicker]="datetimePicker" required autocomplete="false">
+    </mat-form-field>
 
   </form>
-</div>
-<div mat-dialog-actions>
-  <button mat-button color="primary" (click)='createEvent()' [disabled]="!name.valid" tabindex="5">Create</button>
-  <button mat-button (click)="closeDialog()" tabindex="-1">Cancel</button>
 </div>

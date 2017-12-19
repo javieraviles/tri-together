@@ -58,3 +58,17 @@ body {
 .mat-tab-link {
     opacity:1 !important;
 }
+
+.full-screen-dialog {
+    padding: 0px !important;
+    max-width: none !important;
+    width: 100vw;
+    height: 100vh;
+}
+
+.full-screen-dialog .mat-dialog-container{
+    padding: 0px !important;
+    max-width: none !important;
+    width: 100vw;
+    height: 100vh;
+  }

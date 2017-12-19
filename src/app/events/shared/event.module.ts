@@ -13,7 +13,8 @@ import { MatCardModule,
   MatDialogModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatSelectModule } from '@angular/material';
+  MatSelectModule,
+  MatToolbarModule } from '@angular/material';
 import { MatNativeDatetimeModule, MatDatetimepickerModule } from '@mat-datetimepicker/core';
 
 import { EventService } from './event.service';
@@ -36,6 +37,7 @@ import { EventFormComponent } from '../event-form/event-form.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
+    MatToolbarModule,
     MatNativeDatetimeModule,
     MatDatetimepickerModule,
     FormsModule

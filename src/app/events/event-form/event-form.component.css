@@ -1,5 +1,8 @@
-.event-form {
-    min-width: 150px;
-    max-width: 500px;
-    width: 100%;
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.mat-dialog-content {
+  padding:24px;
+  margin:0px;
 }
