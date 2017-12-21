@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 
+import { TimeAgoPipe } from 'time-ago-pipe';
+
 import { MatCardModule, 
   MatButtonModule, 
   MatInputModule, 
@@ -22,6 +24,7 @@ import { MatNativeDatetimeModule, MatDatetimepickerModule } from '@mat-datetimep
 
 import { EventService } from './event.service';
 import { ParticipantService } from './participant.service';
+import { CommentService } from './comment.service';
 import { EventsListComponent } from '../events-list/events-list.component';
 import { EventDetailComponent } from '../event-detail/event-detail.component';
 import { EventFormComponent } from '../event-form/event-form.component';
@@ -52,10 +55,11 @@ import { EventViewComponent } from '../event-view/event-view.component';
     EventsListComponent,
     EventDetailComponent,
     EventFormComponent,
-    EventViewComponent
+    EventViewComponent,
+    TimeAgoPipe
   ],
   providers: [
-    EventService, ParticipantService
+    EventService, ParticipantService, CommentService
   ],
   entryComponents: [
     EventFormComponent

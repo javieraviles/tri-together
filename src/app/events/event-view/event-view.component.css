@@ -1,12 +1,65 @@
-.event-card {
-    margin-bottom:10px;
+.tabs-wrapper {
+    height: calc(100vh - 168px);
+    overflow-y: auto;
 }
 
 .participant-card {
     padding: 10px 24px 0px 24px;
 }
 
-.event-view-container {
-    height: calc(100vh - 48px);
-    overflow-y: auto;
+.comment-card {
+    padding: 10px 24px 0px 24px;
+}
+
+.comment-name {
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.comment-text {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.dot-separator {
+    padding: 0px 5px 0px 5px;
+}
+
+.dot-separator:before {
+    content:"\2022";
+}
+
+.add-comment-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 0;
+    z-index: 99999;
+    border-top: 1px solid lightgrey;
+}
+
+.add-comment-input {
+    font: inherit;
+    background: 0 0;
+    color: currentColor;
+    border: none;
+    outline: 0;
+    padding: 10px 0px 10px 30px;
+    margin: 0;
+    width: 80%;
+    max-width: 80%;
+    vertical-align: bottom;
+    font-size: 12px;
+    height: 25px;   
+}
+
+.add-comment-button {
+    height:45px;
+    width: 10%;
+    min-width: 10% !important;
+    max-width: 10%;
+    float: right;
+}
+
+.comment-bottom-margin {
+    margin-bottom: 45px;
 }

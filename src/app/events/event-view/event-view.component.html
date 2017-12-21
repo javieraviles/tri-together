@@ -9,8 +9,8 @@
     </mat-slide-toggle>
 </mat-toolbar>
 
-<div class="event-view-container">
-    <mat-card class="event-card"> 
+<div>
+    <mat-card> 
         <mat-card-header>
             <img *ngIf="event.discipline" mat-card-avatar src="/assets/img/{{event.discipline}}.png">
             <mat-card-title> {{event.name}} </mat-card-title>
@@ -21,7 +21,7 @@
         </mat-card-content>
     </mat-card>
 
-    <mat-tab-group>
+    <mat-tab-group class="tabs-wrapper" (selectedTabChange)="tabChanged($event)">
         <mat-tab label="Participants">
             <mat-card class="participant-card" *ngFor="let participant of participants"> 
                 <mat-card-header>
@@ -32,6 +32,21 @@
             </mat-card>
         </mat-tab>
         <mat-tab label="Comments">
+            <mat-card class="comment-card" *ngFor="let comment of comments; let last = last;" [ngClass]="{ 'comment-bottom-margin' : last }"> 
+                <mat-card-header *ngIf="comment.user">
+                    <img *ngIf="comment.user.photoURL" mat-card-avatar [src]="comment.user.photoURL">
+                    <mat-card-title class="comment-name"> {{comment.user.displayName}} <span class="dot-separator"></span> {{comment.createdAt | timeAgo}}</mat-card-title>
+                    <mat-card-subtitle class="comment-text"> {{comment.text}} </mat-card-subtitle>
+                </mat-card-header>
+            </mat-card>
         </mat-tab>
     </mat-tab-group>
+    <form>
+        <mat-card *ngIf="showAddComment" class="add-comment-box">
+            <div>
+                <input class="add-comment-input" [(ngModel)]="newComment" #comment='ngModel' tabindex="1" placeholder="Add a comment" name="comment" minlength="3" maxlength="200" required autofocus>
+                <button mat-button (click)='createComment()' [disabled]="!comment.valid" tabindex="2" type="button" class="add-comment-button"><i class="material-icons">done</i></button>
+            </div>
+        </mat-card>
+    </form>
 </div>

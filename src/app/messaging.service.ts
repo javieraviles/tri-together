@@ -16,6 +16,15 @@ export class MessagingService {
 
   constructor(private afs: AngularFirestore, private afAuth: AngularFireAuth, public dialog: MatDialog) { }
 
+  createMessage(title: string, body: string, userId: string) {
+    const message = {
+      title: title,
+      body: body,
+      userId: userId
+    }
+    return this.afs.collection('messages').add(message);
+  }
+
   createToken(token) {
     this.afAuth.authState.take(1).subscribe(user => {
       if (!user) return;
@@ -31,7 +40,6 @@ export class MessagingService {
       this.afs.doc<any>(`fcmTokens/${user.uid}`).update(data);
     })
   }
-  
 
   getPermission(isUserNew: boolean) {
       this.messaging.requestPermission()

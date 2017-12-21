@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Participant } from './participant';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
 
 import { User } from '../../ui/shared/user';
 import { AuthService } from '../../core/auth.service';
@@ -27,6 +26,14 @@ export class ParticipantService {
       
     }
   
+    getNumberOfParticipants(eventId: string) {
+      return new Promise<number>((resolve,reject) => {
+        this.afs.collection<Participant>('participants', ref => ref.where('eventId', '==', eventId)).valueChanges().take(1).subscribe( participants => {
+          resolve(participants.length);
+        });
+      });
+    }
+
     isUserParticipating(userId: string, eventId: string): Observable<Participant> {
       return this.afs.doc<Participant>(`participants/${userId}_${eventId}`).valueChanges();
     }

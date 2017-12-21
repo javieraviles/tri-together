@@ -1,15 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { AuthService } from '../../core/auth.service';
 import { EventService } from '../shared/event.service';
 import { ParticipantService } from '../shared/participant.service';
+import { CommentService } from '../shared/comment.service';
 
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatTabChangeEvent } from '@angular/material';
 
 import { Event } from '../shared/event';
 import { User } from '../../ui/shared/user';
+import { Comment } from '../shared/comment';
+
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-event-view',
@@ -23,10 +28,14 @@ export class EventViewComponent implements OnInit {
   participants: User[] = [];
   userId: string;
   eventId = this.route.snapshot.paramMap.get('id');
+  comments: Comment[] = [];
+  showAddComment: boolean = false;
+  newComment: string = "";
   
   constructor( private auth: AuthService, 
     private eventService: EventService, 
     private participantService: ParticipantService, 
+    private commentService: CommentService, 
     private route: ActivatedRoute,
     private location: Location, 
     public snackBar: MatSnackBar) { }
@@ -44,6 +53,7 @@ export class EventViewComponent implements OnInit {
     });
 
     this.getParticipants();
+    this.getComments();
   }
  
   getEvent(): void {
@@ -56,7 +66,20 @@ export class EventViewComponent implements OnInit {
     })
   }
 
-  setParticipation(participate: boolean) {
+  getComments() {
+    this.commentService.getComments(this.eventId).then( (comments) => {
+      this.comments = comments;
+    });
+  }
+
+  createComment() {
+    this.commentService.createComment(this.eventId,this.userId,this.newComment).then( () => {
+      this.newComment = "";
+      this.getComments();
+    });
+  }
+
+  setParticipation(participate: boolean): void {
     if(participate) {
       this.participantService.createParticipant(this.userId, this.eventId);
     } else {
@@ -68,6 +91,10 @@ export class EventViewComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
+  }
+
+  tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
+    this.showAddComment = tabChangeEvent.index == 1 ? true : false;
   }
   
 }

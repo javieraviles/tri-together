@@ -11,7 +11,7 @@ exports.fcmSend = functions.firestore.document('/messages/{messageId}').onCreate
         notification: {
           title: message.title,
           body: message.body,
-          icon: "https://placeimg.com/250/250/people"
+          icon: "http://www.clubimpulsotri.es/app/img/favicon.png"
         }
       };
       

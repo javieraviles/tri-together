@@ -4,9 +4,13 @@ import { MatSnackBar } from '@angular/material';
 import { AuthService } from '../../core/auth.service';
 import { EventService } from '../shared/event.service';
 import { ParticipantService } from '../shared/participant.service';
+import { CommentService } from '../shared/comment.service';
 
 import { Event } from '../shared/event';
 import { User } from '../../ui/shared/user';
+import { Comment } from '../shared/comment';
+
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'event-detail',
@@ -17,7 +21,8 @@ export class EventDetailComponent implements OnInit {
 
   participate: boolean = false;
   userId: string;
-  participants: User[] = [];
+  numberOfParticipants: number = 0;
+  numberOfComments: number = 0;
 
   @Input()
   event: Event;
@@ -26,6 +31,7 @@ export class EventDetailComponent implements OnInit {
     private auth: AuthService, 
     private eventService: EventService, 
     private participantService: ParticipantService, 
+    private commentService: CommentService, 
     public snackBar: MatSnackBar) { }
 
   ngOnInit() {
@@ -38,14 +44,21 @@ export class EventDetailComponent implements OnInit {
       });
     });
 
-    this.getParticipants();
+    this.getNumberOfParticipants();
+    this.getNumberOfComments();
 
   }
 
-  getParticipants() {
-    this.participantService.getParticipants(this.event.id).then( (participants) => {
-      this.participants = participants;
+  getNumberOfParticipants() {
+    this.participantService.getNumberOfParticipants(this.event.id).then( (numberOfParticipants) => {
+      this.numberOfParticipants = numberOfParticipants;
     })
+  }
+
+  getNumberOfComments() {
+    this.commentService.getNumberOfComments(this.event.id).then( (numberOfComments) => {
+      this.numberOfComments = numberOfComments;
+    });
   }
 
   deleteEvent(id: string) {
@@ -66,6 +79,7 @@ export class EventDetailComponent implements OnInit {
       snackBarRef.afterDismissed().subscribe(() => {
         if(!undoTriggered) {
           this.participantService.deleteParticipants(id);
+          this.commentService.deleteComments(id);
         }
       });
       
@@ -80,7 +94,7 @@ export class EventDetailComponent implements OnInit {
       this.participantService.deleteParticipant(this.userId, this.event.id);
     }
     this.participate = participate;
-    this.getParticipants();
+    this.getNumberOfParticipants();
   }
 
 }
