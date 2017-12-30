@@ -1,42 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
-import { Router } from '@angular/router';
+import { Platform } from 'ionic-angular';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { AuthService } from './core/auth.service';
-import { MessagingService } from "./messaging.service";
+import { TabsPage } from '../pages/tabs/tabs';
+
+import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  templateUrl: 'app.html'
 })
-
-export class AppComponent implements OnInit  {
-  
-  title = 'Triathlon club';
-  showNav: boolean = true;
-
-  navLinks = [
-    { path: '/events', label: 'Events' },
-    { path: '/profile', label: 'Profile' }
-  ]
+export class MyApp implements OnInit {
+  rootPage:any = TabsPage;
 
   constructor(private auth: AuthService, 
-    private msgService: MessagingService,
-    private location: Location,
-    private router: Router ) {
-      router.events.subscribe((event)=>{
-          this.showNav = this.location.path().length < 10 ? true : false;
-      });
-     }
-  
-  ngOnInit() {
-    this.msgService.getPermission(false);
-    this.msgService.receiveMessage();
+    platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+    platform.ready().then(() => {
+      // Okay, so the platform is ready and our plugins are available.
+      // Here you can do any higher level native things you might need.
+      statusBar.styleDefault();
+      splashScreen.hide();
+    });
   }
 
-  getMainContainerHeight() {
-    return this.showNav ? "calc(100vh - 48px)" : "100vh";
-  }
-
+  ngOnInit() { }
 }

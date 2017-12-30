@@ -1,0 +1,50 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Create event</ion-title>
+    <ion-buttons end>
+      <button *ngIf="name" ion-button clear (click)='createEvent()' [disabled]="!name.valid" tabindex="5">Save</button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+
+    <ion-item>
+      <ion-label floating>Title your event</ion-label>
+      <ion-input tabindex="1" name="name" [(ngModel)]="event.name"
+      required minlength="3" maxlength="50"
+      #name='ngModel' autofocus></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Where</ion-label>
+      <ion-input tabindex="2" name="place" [(ngModel)]="event.place"
+      minlength="3" maxlength="50"
+      #place='ngModel'></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Add a description</ion-label>
+      <ion-textarea tabindex="3" name="description" [(ngModel)]="event.description"
+      minlength="0" maxlength="250"
+      #description='ngModel'></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Discipline</ion-label>
+      <ion-select name="discipline" [(ngModel)]="event.discipline" 
+        tabindex="4" required>
+        <ion-option *ngFor="let discipline of disciplines" [value]="discipline.value">{{ discipline.label }}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Start DateTime</ion-label>
+      <ion-datetime displayFormat="DD MMM, YYYY HH:mm" tabindex="5" [(ngModel)]="event.start" name="start" required autocomplete="false"></ion-datetime>
+    </ion-item>
+  
+  </ion-list>
+</ion-content>

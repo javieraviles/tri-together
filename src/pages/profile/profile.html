@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>
+      Profile
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card *ngIf="auth.user | async as user">
+    <ion-item>
+      <ion-avatar item-start>
+        <img [src]="user.photoURL">
+      </ion-avatar>
+      <h2>{{user.displayName}}</h2>
+      <p>{{user.email}}</p>
+    </ion-item>
+    <ion-row>
+      <button ion-button small color="secondary" (click)="auth.signOut()">Logout</button>
+    </ion-row>
+  </ion-card>
+</ion-content>

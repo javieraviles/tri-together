@@ -1,0 +1,46 @@
+.dot-separator {
+    padding: 0px 5px 0px 5px;
+}
+
+.dot-separator:before {
+    content:"\2022";
+}
+
+.add-comment-box {
+    position: fixed;
+    bottom: 56px;
+    left: 0;
+    width: 100%;
+    padding: 0;
+    margin:0;
+    z-index: 99999;
+    border-top: 1px solid lightgrey;
+}
+
+.add-comment-input {
+    font: inherit;
+    background: 0 0;
+    color: currentColor;
+    border: none;
+    outline: 0;
+    padding: 10px 0px 10px 30px;
+    margin: 0;
+    width: 80%;
+    max-width: 80%;
+    vertical-align: bottom;
+    font-size: 12px;
+    height: 45px;   
+}
+
+.add-comment-button {
+    height:45px;
+    width: 10%;
+    min-width: 10% !important;
+    max-width: 10%;
+    float: right;
+    margin:0;
+}
+
+.comment-bottom-margin {
+    margin-bottom: 45px;
+}

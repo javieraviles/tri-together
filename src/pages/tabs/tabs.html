@@ -1,0 +1,42 @@
+<div *ngIf="auth.user | async; then authenticated else guest"></div>
+
+<ng-template #guest>
+  <ion-header>
+    <ion-navbar color="primary">
+      <ion-title>Triathlon Club</ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content padding>
+    <p>Sign 
+      <span *ngIf="enableSignUp">Up</span>
+      <span *ngIf="!enableSignUp">In</span>
+    </p>
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Email</ion-label>
+        <ion-input [(ngModel)]="email" type="email" required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="enableSignUp">
+        <ion-label floating>Name</ion-label>
+        <ion-input [(ngModel)]="name" type="text" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input [(ngModel)]="password" type="password" required></ion-input>
+      </ion-item>
+    </ion-list>
+    <button ion-button *ngIf="!enableSignUp" (click)="signIn(email,password)">Sign in</button>
+    <button ion-button *ngIf="!enableSignUp" (click)="enableSignUp = true"> I don't have an account</button>
+    <button ion-button *ngIf="enableSignUp" (click)="signUp(email,password,name)">Create an account</button>
+    <button ion-button *ngIf="enableSignUp" (click)="enableSignUp = false" > Back to login</button>
+    <p *ngIf="error">{{error}}</p>
+  </ion-content>
+</ng-template>
+
+<ng-template #authenticated>
+  <ion-tabs color="primary">
+    <ion-tab [root]="tab1Root" tabIcon="home"></ion-tab>
+    <ion-tab [root]="tab2Root"  tabIcon="information-circle"></ion-tab>
+  </ion-tabs>
+</ng-template>

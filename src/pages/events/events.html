@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Events</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div *ngFor="let event of events | async"> 
+    <event [event]="event"></event>
+  </div>
+  <ion-fab right bottom>
+      <button ion-fab color="secondary" (click)="createEvent()"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+</ion-content>
