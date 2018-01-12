@@ -14,17 +14,16 @@ import { EventService } from '../services/event.service';
 import { CommentService } from '../services/comment.service';
 import { ParticipantService } from '../services/participant.service';
 
-import { EventDetailPageModule } from '../pages/event-detail/event-detail.module';
-import { EventFormPageModule } from '../pages/event-form/event-form.module';
-
 import { ProfilePage } from '../pages/profile/profile';
 import { EventsPage } from '../pages/events/events';
 import { TabsPage } from '../pages/tabs/tabs';
-
+import { EventDetailPage } from '../pages/event-detail/event-detail';
+import { EventFormPage } from '../pages/event-form/event-form';
 import { EventComponent } from '../components/event/event.component';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { TimeAgoPipe } from '../pipes/time-ago-pipe';
 
 @NgModule({
   declarations: [
@@ -32,23 +31,26 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ProfilePage,
     EventsPage,
     TabsPage,
-    EventComponent
+    EventDetailPage,
+    EventFormPage,
+    EventComponent,
+    TimeAgoPipe
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule.enablePersistence(),
-    AngularFireAuthModule,
-    EventDetailPageModule,
-    EventFormPageModule
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     ProfilePage,
     EventsPage,
-    TabsPage
+    TabsPage,
+    EventDetailPage,
+    EventFormPage
   ],
   providers: [
     StatusBar,

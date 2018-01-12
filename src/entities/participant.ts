@@ -1,5 +1,5 @@
 export class Participant {
-    id?: string;
+    id?:string;
     userId: string;
     eventId: string;
   }

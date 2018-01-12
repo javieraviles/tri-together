@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { Event } from '../../entities/event';
 import { EventService } from '../../services/event.service';
+import { EventFormPage } from '../event-form/event-form';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -10,18 +11,18 @@ import { Observable } from 'rxjs/Observable';
   selector: 'page-events',
   templateUrl: 'events.html'
 })
-export class EventsPage implements OnInit{
+export class EventsPage {
 
   events: Observable<Event[]>;
 
-  constructor(public navCtrl: NavController,private eventService: EventService) { }
+  constructor(public navCtrl: NavController, private eventService: EventService) { }
 
-  ngOnInit() {
+  ionViewDidLoad() {
     this.events = this.eventService.getEventsWithMetaInfo();
   }
 
   createEvent() {
-    this.navCtrl.push('EventFormPage');
+    this.navCtrl.push(EventFormPage);
   }
 
 }

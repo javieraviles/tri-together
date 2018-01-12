@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ToastController, NavController } from 'ionic-angular';
 
 import { AuthService } from '../../services/auth.service';
 import { EventService } from '../../services/event.service';
 import { ParticipantService } from '../../services/participant.service';
 import { CommentService } from '../../services/comment.service';
+
+import { EventDetailPage } from '../../pages/event-detail/event-detail';
 
 import { Event } from '../../entities/event';
 import { User } from '../../entities/user';
@@ -17,12 +19,13 @@ import { Observable } from 'rxjs/Observable';
   selector: 'event',
   templateUrl: './event.component.html'
 })
-export class EventComponent implements OnInit {
+export class EventComponent implements OnInit, OnDestroy  {
 
   participate: boolean = false;
   userId: string;
   numberOfParticipants: number = 0;
   numberOfComments: number = 0;
+  firebaseObservable: any;
 
   @Input()
   event: Event;
@@ -36,18 +39,21 @@ export class EventComponent implements OnInit {
     private commentService: CommentService) { }
 
   ngOnInit() {
-    this.auth.user.subscribe( user => {
-      this.userId = user.uid;
-      this.participantService.isUserParticipating(this.userId, this.event.id).subscribe( participant => {
-        if(participant != null) {
-          this.participate = true;
-        }
-      });
+    this.firebaseObservable = this.auth.user.subscribe( (user) => {
+      if(user) {
+        this.userId = user.uid;
+        this.getNumberOfParticipants();
+        this.getNumberOfComments();
+        this.participantService.isUserParticipating(this.userId, this.event.id).subscribe( participant => {
+          if(participant != null) {
+            this.participate = true;
+          }
+        });
+      }
     });
-
-    this.getNumberOfParticipants();
-    this.getNumberOfComments();
-
+  }
+  ngOnDestroy() {
+    this.firebaseObservable.unsubscribe();
   }
 
   getNumberOfParticipants() {
@@ -100,7 +106,7 @@ export class EventComponent implements OnInit {
   }
 
   goToEventDetails() {
-    this.navCtrl.push('event-detail', {
+    this.navCtrl.push(EventDetailPage, {
       'id': this.event.id
     })
   }

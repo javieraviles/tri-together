@@ -3,8 +3,8 @@
     <ion-title *ngIf="event">{{event.name}}</ion-title>
     <ion-buttons end>
       <ion-toggle color="secondary"
-      [checked]="participate"
-      (click)="setParticipation(!participate)">
+      [(ngModel)]="participate" 
+      (ngModelChange)="setParticipation()">
       </ion-toggle>
     </ion-buttons>
   </ion-navbar>
@@ -14,10 +14,14 @@
   <ion-card *ngIf="event" top>
     <ion-item>
       <ion-avatar item-start>
-        <img src="/assets/imgs/{{event.discipline}}.png">
+        <img [src]="eventAvatarUrl">
       </ion-avatar>
       <h2>{{event.name}}</h2>
       <p>{{event.start | date:'EEEE, d MMM y, H:mm'}}</p>
+      <button ion-button icon-left clear small item-end (click)="editEvent()">
+        <ion-icon name="create"></ion-icon>
+        <div>Edit</div>
+      </button>
     </ion-item>
     <ion-card-content>
       <p><strong>{{event.place}}</strong> {{event.description}}</p>
@@ -68,7 +72,7 @@
   <form>
     <ion-card *ngIf="eventTab == 'comments'" class="add-comment-box">
       <div>
-        <input class="add-comment-input" [(ngModel)]="newComment" #comment='ngModel' tabindex="1" placeholder="Add a comment" name="comment" minlength="3" maxlength="200" required autofocus>
+        <input class="add-comment-input" autocomplete="false" [(ngModel)]="newComment" #comment='ngModel' tabindex="1" placeholder="Add a comment" name="comment" minlength="3" maxlength="200" required>
         <button ion-button color="dark" clear (click)='createComment()' [disabled]="!comment.valid" tabindex="2" type="button" class="add-comment-button"><ion-icon name="checkmark"></ion-icon></button>
       </div>
     </ion-card>

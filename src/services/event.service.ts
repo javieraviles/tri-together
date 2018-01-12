@@ -19,6 +19,7 @@ export class EventService {
       name: newEvent.name,
       discipline: newEvent.discipline, 
       start: newEvent.start,
+      owner: newEvent.owner,
       createdAt: newEvent.createdAt ? newEvent.createdAt : new Date()
     }
     if(newEvent.place) {
@@ -46,6 +47,7 @@ export class EventService {
           description: data.description, 
           discipline: data.discipline, 
           start: data.start, 
+          owner: data.owner,
           createdAt: data.createdAt 
         };
       });
@@ -65,7 +67,7 @@ export class EventService {
   }
 
   updateEvent(id: string, event: Partial<Event>) {
-    return this.getEvent(id).update(event);
+    return this.getEvent(id).update(this.buildEventForFirebase(event));
   }
 
   deleteEvent(id: string) {

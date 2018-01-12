@@ -14,9 +14,8 @@
       </ion-avatar>
       <h2>{{user.displayName}}</h2>
       <p>{{user.email}}</p>
+      <button item-end ion-button small color="secondary" (click)="auth.signOut()">Logout</button>
     </ion-item>
-    <ion-row>
-      <button ion-button small color="secondary" (click)="auth.signOut()">Logout</button>
-    </ion-row>
+    
   </ion-card>
 </ion-content>

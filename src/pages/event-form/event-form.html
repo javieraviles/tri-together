@@ -1,9 +1,9 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Create event</ion-title>
+    <ion-title>{{title}}</ion-title>
     <ion-buttons end>
-      <button *ngIf="name" ion-button clear (click)='createEvent()' [disabled]="!name.valid" tabindex="5">Save</button>
+      <button *ngIf="name" ion-button clear (click)='saveEvent()' [disabled]="!name.valid" tabindex="6">Save</button>
     </ion-buttons>
   </ion-navbar>
 
