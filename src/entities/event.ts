@@ -6,5 +6,9 @@ export class Event {
   discipline: string;
   start: Date;
   owner: string;
+  numberOfComments: number;
+  numberOfParticipants: number;
+  imageURL: string;
+  participate?: boolean;
   createdAt: Date;
 }

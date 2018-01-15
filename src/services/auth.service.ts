@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import { LoadingController } from 'ionic-angular';
+
 import * as firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -11,16 +13,26 @@ import { User } from '../entities/user';
 @Injectable()
 export class AuthService {
 
-  user: Observable<User>;
+  userObservable: Observable<User>;
+  user: User;
 
   constructor(private afAuth: AngularFireAuth,
-              private afs: AngularFirestore) { 
+    private afs: AngularFirestore,
+    public loadingCtrl: LoadingController) { 
 
-    this.user = this.afAuth.authState
+    let loader = loadingCtrl.create({
+      content: "Loading...",
+    });
+    loader.present();
+
+    this.userObservable = this.afAuth.authState
       .switchMap(user => {
         if (user) {
+          this.user = user;
+          loader.dismiss();
           return this.getUser(user.uid);
         } else {
+          loader.dismiss();
           return Observable.of(null);
         }
       })

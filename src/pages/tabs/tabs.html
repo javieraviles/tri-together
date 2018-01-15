@@ -1,4 +1,4 @@
-<div *ngIf="auth.user | async; then authenticated else guest"></div>
+<div *ngIf="auth.userObservable | async; then authenticated else guest"></div>
 
 <ng-template #guest>
   <ion-header>

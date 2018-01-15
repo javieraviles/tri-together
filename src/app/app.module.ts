@@ -10,6 +10,7 @@ export const firebaseConfig = environment.firebaseConfig;
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthService } from '../services/auth.service';
+import { UploadService } from '../services/upload.service';
 import { EventService } from '../services/event.service';
 import { CommentService } from '../services/comment.service';
 import { ParticipantService } from '../services/participant.service';
@@ -19,7 +20,6 @@ import { EventsPage } from '../pages/events/events';
 import { TabsPage } from '../pages/tabs/tabs';
 import { EventDetailPage } from '../pages/event-detail/event-detail';
 import { EventFormPage } from '../pages/event-form/event-form';
-import { EventComponent } from '../components/event/event.component';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -33,7 +33,6 @@ import { TimeAgoPipe } from '../pipes/time-ago-pipe';
     TabsPage,
     EventDetailPage,
     EventFormPage,
-    EventComponent,
     TimeAgoPipe
   ],
   imports: [
@@ -59,7 +58,8 @@ import { TimeAgoPipe } from '../pipes/time-ago-pipe';
     AuthService,
     EventService,
     CommentService,
-    ParticipantService
+    ParticipantService,
+    UploadService
   ]
 })
 export class AppModule {}

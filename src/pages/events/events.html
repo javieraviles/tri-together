@@ -5,10 +5,47 @@
 </ion-header>
 
 <ion-content padding>
-  <div *ngFor="let event of events | async"> 
-    <event [event]="event"></event>
+  <div *ngFor="let event of events"> 
+    <ion-card>
+      <ion-item>
+        <ion-avatar item-start>
+          <img src="./assets/imgs/{{event.discipline}}.png">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{event.name}}</h2>
+          <p>{{event.start | date:'EEEE, d MMM y, H:mm'}}</p>
+        </ion-label>
+        <ion-toggle item-end color="primary"
+          [(ngModel)]="event.participate" (ngModelChange)="setParticipation(event.id, event.participate)">
+        </ion-toggle>
+      </ion-item>
+      <img *ngIf="event.imageURL" [src]="event.imageURL" (click)="goToEventDetails(event.id)">
+      <ion-card-content>
+        <p><strong>{{event.place}}</strong> {{event.description}}</p>
+      </ion-card-content>
+      <ion-row>
+        <ion-col>
+          <button (click)="goToEventDetails(event.id)" ion-button icon-left clear small>
+            <ion-icon name="people"></ion-icon>
+            <div>{{event.numberOfParticipants}} participants</div>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button (click)="goToEventDetails(event.id)" ion-button icon-left clear small>
+            <ion-icon name="text"></ion-icon>
+            <div>{{event.numberOfComments}} comments</div>
+          </button>
+        </ion-col>
+        <ion-col *ngIf="event.owner == userId">
+          <button ion-button icon-left clear small color="danger" (click)="deleteEvent(event)">
+            <ion-icon name="trash"></ion-icon>
+            <div>Delete</div>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
   </div>
   <ion-fab right bottom>
-      <button ion-fab color="secondary" (click)="createEvent()"><ion-icon name="add"></ion-icon></button>
-    </ion-fab>
+    <button ion-fab color="secondary" (click)="createEvent()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
 </ion-content>

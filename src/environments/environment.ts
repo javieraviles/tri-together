@@ -10,7 +10,7 @@ export const environment = {
     authDomain: "triathlon-club.firebaseapp.com",
     databaseURL: "https://triathlon-club.firebaseio.com",
     projectId: "triathlon-club",
-    storageBucket: "",
+    storageBucket: "triathlon-club.appspot.com",
     messagingSenderId: "495992756834"
   }
 };

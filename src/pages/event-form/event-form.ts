@@ -12,7 +12,6 @@ import { EventService } from '../../services/event.service';
 })
 export class EventFormPage {
 
-  firebaseObservable: any;
   event: Event = new Event();
   eventId: string;
   originalEvent: Event = new Event();
@@ -34,6 +33,7 @@ export class EventFormPage {
     private auth: AuthService, 
     private eventService: EventService ) {
       
+      this.userId = this.auth.user.uid;
       this.editMode = Boolean(navParams.get('event'));
 
       if(this.editMode) {
@@ -42,18 +42,6 @@ export class EventFormPage {
         this.originalEvent = JSON.parse(JSON.stringify(this.event));
         this.title = "Edit event";
       }
-  }
-
-  ionViewDidLoad() {
-    this.firebaseObservable = this.auth.user.subscribe( (user) => {
-      if(user) {
-        this.userId = user.uid;
-      }
-    });
-  }
-
-  ionViewWillUnload() {
-    this.firebaseObservable.unsubscribe();
   }
 
   ionViewWillLeave() {

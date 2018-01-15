@@ -3,13 +3,15 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Participant } from '../entities/participant';
 import { Observable } from 'rxjs/Observable';
 
+import { EventService } from './event.service';
+
 import { User } from '../entities/user';
 import { AuthService } from '../services/auth.service';
 
 @Injectable()
 export class ParticipantService {
   
-    constructor(private afs: AngularFirestore, private auth: AuthService) { }
+    constructor(private afs: AngularFirestore, private auth: AuthService, private eventService: EventService) { }
 
     getParticipants(eventId: string) {
       let users: User[] = [];
@@ -25,14 +27,6 @@ export class ParticipantService {
       });
       
     }
-  
-    getNumberOfParticipants(eventId: string) {
-      return new Promise<number>((resolve,reject) => {
-        this.afs.collection<Participant>('participants', ref => ref.where('eventId', '==', eventId)).valueChanges().subscribe( participants => {
-          resolve(participants.length);
-        });
-      });
-    }
 
     isUserParticipating(userId: string, eventId: string): Observable<Participant> {
       return this.afs.doc<Participant>(`participants/${userId}_${eventId}`).valueChanges();
@@ -46,11 +40,21 @@ export class ParticipantService {
 
       const participantPath = `participants/${participant.userId}_${participant.eventId}`;
 
-      return this.afs.doc(participantPath).set(participant);
+      return this.afs.doc(participantPath).set(participant).then( () => {
+        this.eventService.getEventPromise(eventId).then( (event) => {
+          event.numberOfParticipants++;
+          this.eventService.updateEvent(eventId, event);
+        });
+      });
     }
   
     deleteParticipant(userId: string, eventId: string) {
-      return this.afs.doc<Participant>(`participants/${userId}_${eventId}`).delete();
+      return this.afs.doc<Participant>(`participants/${userId}_${eventId}`).delete().then( () => {
+        this.eventService.getEventPromise(eventId).then( (event) => {
+          event.numberOfParticipants--;
+          this.eventService.updateEvent(eventId, event);
+        });
+      });
     }
 
     deleteParticipants(eventId: string) {

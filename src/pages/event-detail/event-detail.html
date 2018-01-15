@@ -18,13 +18,30 @@
       </ion-avatar>
       <h2>{{event.name}}</h2>
       <p>{{event.start | date:'EEEE, d MMM y, H:mm'}}</p>
-      <button ion-button icon-left clear small item-end (click)="editEvent()">
+      <button ion-button icon-left clear small item-end *ngIf="event.owner == userId" (click)="editEvent()">
         <ion-icon name="create"></ion-icon>
         <div>Edit</div>
       </button>
     </ion-item>
+    <img *ngIf="fileUploaded" [src]="fileUploaded.url" (press)="pressFileUploaded(fileUploaded)">
     <ion-card-content>
       <p><strong>{{event.place}}</strong> {{event.description}}</p>
+      <ion-item *ngIf="!fileUploaded">
+          <div *ngIf="currentUpload">
+            <div class="progress">
+              <div class="progress-bar progress-bar-animated" [ngStyle]="{ 'width': currentUpload?.progress + '%' }"></div>
+            </div>
+            <div class="progress-outer">
+              <div class="progress-inner" [style.width]="currentUpload?.progress + '%'">
+                  {{currentUpload?.name}} | {{currentUpload?.progress}}%
+              </div>
+            </div>
+          </div>
+          <ion-item>
+            <label><ion-note><ion-icon name="add"> </ion-icon> Add an image</ion-note></label>
+            <input type="file" (change)="detectFiles($event)" id="file-input" style="opacity: 0" #fileInp>
+          </ion-item>
+        </ion-item>
     </ion-card-content>
   </ion-card>
 
@@ -55,7 +72,7 @@
   
     <ion-list *ngSwitchCase="'comments'">
       <div *ngFor="let comment of comments; let last = last;" [ngClass]="{ 'comment-bottom-margin' : last }">
-        <ion-item *ngIf="comment.user">
+        <ion-item *ngIf="comment.user" (press)="pressComment(comment)">
           <ion-avatar *ngIf="comment.user.photoURL" item-start>
             <img [src]="comment.user.photoURL">
           </ion-avatar>
@@ -70,12 +87,16 @@
   </div>
 
   <form>
-    <ion-card *ngIf="eventTab == 'comments'" class="add-comment-box">
+    <ion-card *ngIf="enableCommentInput" class="add-comment-box">
       <div>
-        <input class="add-comment-input" autocomplete="false" [(ngModel)]="newComment" #comment='ngModel' tabindex="1" placeholder="Add a comment" name="comment" minlength="3" maxlength="200" required>
+        <input class="add-comment-input" autocomplete="false" [(ngModel)]="newComment" #comment='ngModel' tabindex="1" placeholder="Add a comment" name="comment" minlength="3" maxlength="200" required autofocus>
         <button ion-button color="dark" clear (click)='createComment()' [disabled]="!comment.valid" tabindex="2" type="button" class="add-comment-button"><ion-icon name="checkmark"></ion-icon></button>
       </div>
     </ion-card>
   </form>
+
+  <ion-fab right bottom *ngIf="eventTab == 'comments' && !enableCommentInput">
+    <button ion-fab color="secondary" (click)="enableCommentInput = true"><ion-icon name="chatboxes"></ion-icon></button>
+  </ion-fab>
 
 </ion-content>

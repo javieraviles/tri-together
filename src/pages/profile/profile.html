@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-card *ngIf="auth.user | async as user">
+  <ion-card *ngIf="auth.user as user">
     <ion-item>
       <ion-avatar item-start>
         <img [src]="user.photoURL">

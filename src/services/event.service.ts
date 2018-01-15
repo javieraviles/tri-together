@@ -14,19 +14,22 @@ export class EventService {
     this.eventsCollection = this.afs.collection<Event>('events');
   }
 
-  buildEventForFirebase(newEvent: Partial<Event>) {
+  buildEventForFirebase(inEvent: Partial<Event>) {
     const event = {
-      name: newEvent.name,
-      discipline: newEvent.discipline, 
-      start: newEvent.start,
-      owner: newEvent.owner,
-      createdAt: newEvent.createdAt ? newEvent.createdAt : new Date()
+      name: inEvent.name,
+      discipline: inEvent.discipline, 
+      start: inEvent.start,
+      owner: inEvent.owner,
+      numberOfComments: inEvent.numberOfComments,
+      numberOfParticipants: inEvent.numberOfParticipants,
+      imageURL: inEvent.imageURL ? inEvent.imageURL : "",
+      createdAt: inEvent.createdAt ? inEvent.createdAt : new Date()
     }
-    if(newEvent.place) {
-      event['place'] = newEvent.place;
+    if(inEvent.place) {
+      event['place'] = inEvent.place;
     }
-    if(newEvent.description) {
-      event['description'] = newEvent.description;
+    if(inEvent.description) {
+      event['description'] = inEvent.description;
     }
     return event;
   }
@@ -48,6 +51,9 @@ export class EventService {
           discipline: data.discipline, 
           start: data.start, 
           owner: data.owner,
+          numberOfComments: data.numberOfComments,
+          numberOfParticipants: data.numberOfParticipants,
+          imageURL: data.imageURL,
           createdAt: data.createdAt 
         };
       });
@@ -58,7 +64,17 @@ export class EventService {
     return this.afs.doc<Event>(`events/${id}`);
   }
 
+  getEventPromise(id: string) {
+    return new Promise<Event>((resolve,reject) => {
+      this.afs.doc<Event>(`events/${id}`).valueChanges().subscribe( (event) => {
+        resolve(event);
+      });
+    });
+  }
+
   createEvent(newEvent: Partial<Event>) {
+    newEvent.numberOfComments = 0;
+    newEvent.numberOfParticipants = 0;
     return this.eventsCollection.add(this.buildEventForFirebase(newEvent));
   }
 
