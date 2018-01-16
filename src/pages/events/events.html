@@ -16,22 +16,22 @@
           <p>{{event.start | date:'EEEE, d MMM y, H:mm'}}</p>
         </ion-label>
         <ion-toggle item-end color="primary"
-          [(ngModel)]="event.participate" (ngModelChange)="setParticipation(event.id, event.participate)">
+          [(ngModel)]="participations[event.id]" (ngModelChange)="setParticipation(event.id, participations[event.id])">
         </ion-toggle>
       </ion-item>
-      <img *ngIf="event.imageURL" [src]="event.imageURL" (click)="goToEventDetails(event.id)">
+      <img *ngIf="event.imageURL" [src]="event.imageURL" (click)="goToEventDetails(event.id, 'participants')">
       <ion-card-content>
         <p><strong>{{event.place}}</strong> {{event.description}}</p>
       </ion-card-content>
       <ion-row>
         <ion-col>
-          <button (click)="goToEventDetails(event.id)" ion-button icon-left clear small>
+          <button (click)="goToEventDetails(event.id, 'participants')" ion-button icon-left clear small>
             <ion-icon name="people"></ion-icon>
             <div>{{event.numberOfParticipants}} participants</div>
           </button>
         </ion-col>
         <ion-col>
-          <button (click)="goToEventDetails(event.id)" ion-button icon-left clear small>
+          <button (click)="goToEventDetails(event.id, 'comments')" ion-button icon-left clear small>
             <ion-icon name="text"></ion-icon>
             <div>{{event.numberOfComments}} comments</div>
           </button>

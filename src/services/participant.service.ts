@@ -14,16 +14,15 @@ export class ParticipantService {
     constructor(private afs: AngularFirestore, private auth: AuthService, private eventService: EventService) { }
 
     getParticipants(eventId: string) {
-      let users: User[] = [];
-      return new Promise<User[]>((resolve,reject) => {
-        this.afs.collection<Participant>('participants', ref => ref.where('eventId', '==', eventId)).valueChanges().subscribe( participants => {
-          for (let participant of participants) {
-            this.auth.getUser(participant.userId).subscribe((user) => {
-              users.push(user);
-            })
-          }
-          resolve(users);
-        });
+      
+      return this.afs.collection<Participant>('participants', ref => ref.where('eventId', '==', eventId)).valueChanges().switchMap( (participants) => {
+        let users: User[] = [];
+        for (let participant of participants) {
+          this.auth.getUser(participant.userId).take(1).subscribe((user) => {
+            users.push(user);
+          })
+        }
+        return Observable.of(users);
       });
       
     }
@@ -42,8 +41,9 @@ export class ParticipantService {
 
       return this.afs.doc(participantPath).set(participant).then( () => {
         this.eventService.getEventPromise(eventId).then( (event) => {
-          event.numberOfParticipants++;
-          this.eventService.updateEvent(eventId, event);
+          let modifiedEvent = event.payload.data();
+          modifiedEvent.numberOfParticipants++;
+          this.eventService.updateEvent(eventId, modifiedEvent);
         });
       });
     }
@@ -51,8 +51,9 @@ export class ParticipantService {
     deleteParticipant(userId: string, eventId: string) {
       return this.afs.doc<Participant>(`participants/${userId}_${eventId}`).delete().then( () => {
         this.eventService.getEventPromise(eventId).then( (event) => {
-          event.numberOfParticipants--;
-          this.eventService.updateEvent(eventId, event);
+          let modifiedEvent = event.payload.data();
+          modifiedEvent.numberOfParticipants--;
+          this.eventService.updateEvent(eventId, modifiedEvent);
         });
       });
     }

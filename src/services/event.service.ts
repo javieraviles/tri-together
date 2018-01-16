@@ -3,6 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Event } from '../entities/event';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
+import 'rxjs/add/operator/take';
 
 @Injectable()
 export class EventService {
@@ -54,7 +55,7 @@ export class EventService {
           numberOfComments: data.numberOfComments,
           numberOfParticipants: data.numberOfParticipants,
           imageURL: data.imageURL,
-          createdAt: data.createdAt 
+          createdAt: data.createdAt
         };
       });
     });
@@ -65,11 +66,7 @@ export class EventService {
   }
 
   getEventPromise(id: string) {
-    return new Promise<Event>((resolve,reject) => {
-      this.afs.doc<Event>(`events/${id}`).valueChanges().subscribe( (event) => {
-        resolve(event);
-      });
-    });
+      return this.afs.doc<Event>(`events/${id}`).snapshotChanges().take(1).toPromise();
   }
 
   createEvent(newEvent: Partial<Event>) {

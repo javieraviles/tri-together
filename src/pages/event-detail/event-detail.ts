@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ViewController } from 'ionic-angular';
 
 import { AuthService } from '../../services/auth.service';
 import { CommentService } from '../../services/comment.service';
@@ -26,14 +26,16 @@ export class EventDetailPage {
 
   firebaseObservableParticipate: any;
   firebaseObservableEvent: any;
+  firebaseObservableParticipants: any;
+  firebaseObservableUploads: any;
   eventId = this.navParams.data.id;
   event: Event = new Event();
   participate: boolean = false;
   participants: User[] = [];
   userId: string;
-  comments: Comment[] = [];
+  comments: Observable<Comment[]>;
   newComment: string = "";
-  eventTab='participants';
+  eventTab = this.navParams.data.tab;
   eventAvatarUrl: string = "";
   selectedFiles: FileList;
   currentUpload: Upload;
@@ -41,6 +43,7 @@ export class EventDetailPage {
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
+    public viewCtrl: ViewController,
     public alertCtrl: AlertController,
     private auth: AuthService, 
     private eventService: EventService, 
@@ -54,19 +57,16 @@ export class EventDetailPage {
     this.getEvent();
     this.getParticipants();
     this.getComments();
-    this.firebaseObservableParticipate = this.participantService.isUserParticipating(this.userId, this.eventId).subscribe( participant => {
-      if(participant != null) {
-        this.participate = true;
-      }
-    });
-    this.uploadService.getUploadsWithMetaInfo('events', this.eventId).map( arr => arr[0]).subscribe((upload) => {
-      this.fileUploaded = upload;
-    });
+    this.getUploads();
+    this.getParticipation();
+
   }
 
   ionViewWillUnload() {
     this.firebaseObservableParticipate.unsubscribe();
     this.firebaseObservableEvent.unsubscribe();
+    this.firebaseObservableParticipants.unsubscribe();
+    this.firebaseObservableUploads.unsubscribe();
   }
 
   showAlert(title: string, msg: string) {
@@ -80,20 +80,32 @@ export class EventDetailPage {
 
   getEvent(): void {
     this.firebaseObservableEvent = this.eventService.getEvent(this.eventId).valueChanges().subscribe( (event) => {
-      this.event = event;
-      this.eventAvatarUrl = "./assets/imgs/" + this.event.discipline + ".png";
+      if(Boolean(event)){
+        this.event = event;
+        this.eventAvatarUrl = "./assets/imgs/" + this.event.discipline + ".png";
+      } else {
+        this.showAlert("Event deleted", "The event you had opened has been deleted");
+        this.viewCtrl.dismiss();
+      }
+    });
+  }
+
+  editEvent() {
+    this.navCtrl.push(EventFormPage, {
+      event: this.event,
+      eventId: this.eventId
     });
   }
 
   getParticipants() {
-    this.participantService.getParticipants(this.eventId).then( (participants) => {
+    this.firebaseObservableParticipants = this.participantService.getParticipants(this.eventId).subscribe( (participants) => {
       this.participants = participants;
     })
   }
 
-  getComments() {
-    this.commentService.getComments(this.eventId).then( (comments) => {
-      this.comments = comments;
+  getParticipation() {
+    this.firebaseObservableParticipate = this.participantService.isUserParticipating(this.userId, this.eventId).subscribe( (participant) => {
+      this.participate = Boolean(participant);
     });
   }
 
@@ -103,13 +115,51 @@ export class EventDetailPage {
     } else {
       this.participantService.deleteParticipant(this.userId, this.eventId);
     }
-    this.getParticipants();
   }
 
-  editEvent() {
-    this.navCtrl.push(EventFormPage, {
-      event: this.event,
-      eventId: this.eventId
+  getComments() {
+    this.comments = this.commentService.getComments(this.eventId);
+  }
+
+  createComment() {
+    this.commentService.createComment(this.eventId,this.userId,this.newComment).then( () => {
+      this.newComment = "";
+    });
+  }
+
+  deleteComment(commentId: string) {
+    this.commentService.deleteComment(this.eventId, commentId);
+  }
+
+  pressComment(comment: Comment) {
+    if(comment.userId!=this.userId) {
+      return
+    }
+
+    let confirm = this.alertCtrl.create({
+      title: 'Delete comment',
+      message: 'Do you want to delete this comment?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.deleteComment(comment.id);
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  getUploads() {
+    this.firebaseObservableUploads = this.uploadService.getUploadsWithMetaInfo('events', this.eventId).map( arr => arr[0]).subscribe((upload) => {
+      this.fileUploaded = upload;
     });
   }
 
@@ -122,7 +172,7 @@ export class EventDetailPage {
     } else {
       this.currentUpload = new Upload(file);
       this.uploadService.pushUpload(this.currentUpload, 'events', this.eventId).then( (imageURL) => {
-        this.eventService.getEventPromise(this.eventId).then( (event) => {
+        this.eventService.getEvent(this.eventId).valueChanges().subscribe( (event) => {
           event.imageURL = imageURL;
           this.eventService.updateEvent(this.eventId, event);
         });
@@ -148,7 +198,7 @@ export class EventDetailPage {
           text: 'Yes',
           handler: () => {
             this.uploadService.deleteUpload(upload, 'events', this.eventId);
-            this.eventService.getEventPromise(this.eventId).then( (event) => {
+            this.eventService.getEvent(this.eventId).valueChanges().subscribe( (event) => {
               event.imageURL = "";
               this.eventService.updateEvent(this.eventId, event);
             });
@@ -158,40 +208,4 @@ export class EventDetailPage {
     });
     confirm.present();
   }
-
-  createComment() {
-    this.commentService.createComment(this.eventId,this.userId,this.newComment).then( () => {
-      this.newComment = "";
-      this.getComments();
-    });
-  }
-
-  pressComment(comment: Comment) {
-    if(comment.userId!=this.userId) {
-      return
-    }
-
-    let confirm = this.alertCtrl.create({
-      title: 'Delete comment',
-      message: 'Do you want to delete this comment?',
-      buttons: [
-        {
-          text: 'No',
-          handler: () => {
-            console.log('No clicked');
-          }
-        },
-        {
-          text: 'Yes',
-          handler: () => {
-            this.commentService.deleteComment(this.eventId, comment.id).then( () => {
-              this.getComments();
-            });
-          }
-        }
-      ]
-    });
-    confirm.present();
-  }
-
 }

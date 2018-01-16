@@ -37,7 +37,7 @@
               </div>
             </div>
           </div>
-          <ion-item>
+          <ion-item *ngIf="event.owner == userId">
             <label><ion-note><ion-icon name="add"> </ion-icon> Add an image</ion-note></label>
             <input type="file" (change)="detectFiles($event)" id="file-input" style="opacity: 0" #fileInp>
           </ion-item>
@@ -71,7 +71,7 @@
     </ion-list>
   
     <ion-list *ngSwitchCase="'comments'">
-      <div *ngFor="let comment of comments; let last = last;" [ngClass]="{ 'comment-bottom-margin' : last }">
+      <div *ngFor="let comment of comments | async; let last = last;" [ngClass]="{ 'comment-bottom-margin' : last }">
         <ion-item *ngIf="comment.user" (press)="pressComment(comment)">
           <ion-avatar *ngIf="comment.user.photoURL" item-start>
             <img [src]="comment.user.photoURL">

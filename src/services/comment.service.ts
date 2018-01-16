@@ -13,9 +13,8 @@ export class CommentService {
   constructor(private afs: AngularFirestore, private eventService: EventService) { }
 
   getComments(eventId: string) {
-    return new Promise<Comment[]>((resolve,reject) => {
-      this.afs.collection<Comment>(`events/${eventId}/comments`, (ref) => ref.orderBy('createdAt', 'desc')).snapshotChanges().map((actions) => {
-        return actions.map((a) => {
+      return this.afs.collection<Comment>(`events/${eventId}/comments`, (ref) => ref.orderBy('createdAt', 'desc')).snapshotChanges().switchMap((actions) => {
+        let comments = actions.map((a) => {
           const data = a.payload.doc.data() as Comment;
           return { 
             id: a.payload.doc.id, 
@@ -25,15 +24,13 @@ export class CommentService {
             createdAt: data.createdAt 
           };
         });
-      }).subscribe( (comments) => {
         for(let comment of comments) {
-          this.afs.doc<User>(`users/${comment.userId}`).valueChanges().subscribe( (user) => {
+          this.afs.doc<User>(`users/${comment.userId}`).valueChanges().take(1).subscribe( (user) => {
             comment.user = user;
           });
         }
-        resolve(comments);
+        return Observable.of(comments);
       });
-    });
   }
 
   createComment(eventId: string, userId: string, newComment: string) {
@@ -45,8 +42,9 @@ export class CommentService {
 
     return this.afs.collection<Comment>(`events/${eventId}/comments`).add(comment).then( () => {
       this.eventService.getEventPromise(eventId).then( (event) => {
-        event.numberOfComments++;
-        this.eventService.updateEvent(eventId, event);
+        let modifiedEvent = event.payload.data();
+        modifiedEvent.numberOfComments++;
+        this.eventService.updateEvent(eventId, modifiedEvent);
       });
     });
   }
@@ -54,8 +52,9 @@ export class CommentService {
   deleteComment(eventId: string, commentId: string) {
     return this.afs.doc<Comment>(`events/${eventId}/comments/${commentId}`).delete().then( () => {
       this.eventService.getEventPromise(eventId).then( (event) => {
-        event.numberOfComments--;
-        this.eventService.updateEvent(eventId, event);
+        let modifiedEvent = event.payload.data();
+        modifiedEvent.numberOfComments--;
+        this.eventService.updateEvent(eventId, modifiedEvent);
       });
     });
   }

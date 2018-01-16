@@ -21,6 +21,8 @@ export class EventsPage {
   events: Event[];
   userId: string;
   firebaseObservable: any;
+  participations: boolean[] = [];
+  participationsObservables: any = [];
 
   constructor(public navCtrl: NavController, 
     private toastCtrl: ToastController,
@@ -35,10 +37,13 @@ export class EventsPage {
 
     this.firebaseObservable = this.eventService.getEventsWithMetaInfo().subscribe( (events) => {
       for(let event of events) {
-        this.participantService.isUserParticipating(this.userId, event.id).forEach( (participant) => {
-          event.participate = participant != null ? true : false;
-        });
+        if(this.participations[event.id] == null) {
+          this.participationsObservables[event.id] = this.participantService.isUserParticipating(this.userId, event.id).subscribe( (participant) => {
+            this.participations[event.id] = Boolean(participant);
+          });
+        }
       }
+      
       this.events = events
     });
 
@@ -46,6 +51,9 @@ export class EventsPage {
 
   ionViewWillUnload() {
     this.firebaseObservable.unsubscribe();
+    for(let observable of this.participationsObservables) {
+      observable.unsubscribe();
+    }
   }
 
   createEvent() {
@@ -87,9 +95,10 @@ export class EventsPage {
      }
    }
  
-   goToEventDetails(eventId: string) {
+   goToEventDetails(eventId: string, tab: string) {
      this.navCtrl.push(EventDetailPage, {
-       'id': eventId
+       'id': eventId,
+       'tab': tab
      })
    }
 
