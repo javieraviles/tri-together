@@ -9,8 +9,12 @@
 <ion-content padding>
   <ion-card *ngIf="auth.user as user">
     <ion-item>
-      <ion-avatar item-start>
+      <ion-avatar (press)="pressProfilePic()" *ngIf="user.photoURL" item-start>
         <img [src]="user.photoURL">
+      </ion-avatar>
+      <ion-avatar item-start *ngIf="!user.photoURL">
+        <label><img *ngIf="!user.photoURL" src="./assets/imgs/add-avatar.png"></label>
+        <input type="file" (change)="detectFiles($event)" id="file-input" style="opacity: 0" #fileInp>
       </ion-avatar>
       <h2>{{user.displayName}}</h2>
       <p>{{user.email}}</p>
@@ -18,4 +22,16 @@
     </ion-item>
     
   </ion-card>
+
+  <div *ngIf="currentUpload">
+    <div class="progress">
+      <div class="progress-bar progress-bar-animated" [ngStyle]="{ 'width': currentUpload?.progress + '%' }"></div>
+    </div>
+    <div class="progress-outer">
+      <div class="progress-inner" [style.width]="currentUpload?.progress + '%'">
+          {{currentUpload?.name}} | {{currentUpload?.progress}}%
+      </div>
+    </div>
+  </div>
+
 </ion-content>

@@ -87,4 +87,16 @@ export class AuthService {
     return this.afs.doc<User>(`users/${userId}`).valueChanges();
   }
 
+  updateProfilePic(photoURL: string) {
+    const modifiedUser = {
+      uid: this.user.uid,
+      displayName: this.user.displayName,
+      photoURL: photoURL,
+      email: this.user.email
+    }
+
+    this.afAuth.auth.currentUser.updateProfile({displayName: this.user.displayName, photoURL: photoURL});
+    this.afs.doc<User>(`users/${this.user.uid}`).update(modifiedUser);
+  }
+
 }

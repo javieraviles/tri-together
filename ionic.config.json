@@ -1,6 +1,6 @@
 {
   "name": "triathlon-club",
-  "app_id": "",
+  "app_id": "ba451cd7",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}

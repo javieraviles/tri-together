@@ -26,12 +26,11 @@ export class EventDetailPage {
 
   firebaseObservableParticipate: any;
   firebaseObservableEvent: any;
-  firebaseObservableParticipants: any;
   firebaseObservableUploads: any;
   eventId = this.navParams.data.id;
   event: Event = new Event();
   participate: boolean = false;
-  participants: User[] = [];
+  participants: Observable<User[]>;
   userId: string;
   comments: Observable<Comment[]>;
   newComment: string = "";
@@ -65,7 +64,6 @@ export class EventDetailPage {
   ionViewWillUnload() {
     this.firebaseObservableParticipate.unsubscribe();
     this.firebaseObservableEvent.unsubscribe();
-    this.firebaseObservableParticipants.unsubscribe();
     this.firebaseObservableUploads.unsubscribe();
   }
 
@@ -98,9 +96,7 @@ export class EventDetailPage {
   }
 
   getParticipants() {
-    this.firebaseObservableParticipants = this.participantService.getParticipants(this.eventId).subscribe( (participants) => {
-      this.participants = participants;
-    })
+    this.participants = this.participantService.getParticipants(this.eventId);
   }
 
   getParticipation() {
@@ -172,6 +168,7 @@ export class EventDetailPage {
     } else {
       this.currentUpload = new Upload(file);
       this.uploadService.pushUpload(this.currentUpload, 'events', this.eventId).then( (imageURL) => {
+        this.currentUpload = null;
         this.eventService.getEvent(this.eventId).valueChanges().subscribe( (event) => {
           event.imageURL = imageURL;
           this.eventService.updateEvent(this.eventId, event);

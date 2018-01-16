@@ -27,21 +27,21 @@
     <ion-card-content>
       <p><strong>{{event.place}}</strong> {{event.description}}</p>
       <ion-item *ngIf="!fileUploaded">
-          <div *ngIf="currentUpload">
-            <div class="progress">
-              <div class="progress-bar progress-bar-animated" [ngStyle]="{ 'width': currentUpload?.progress + '%' }"></div>
-            </div>
-            <div class="progress-outer">
-              <div class="progress-inner" [style.width]="currentUpload?.progress + '%'">
-                  {{currentUpload?.name}} | {{currentUpload?.progress}}%
-              </div>
+        <div *ngIf="currentUpload">
+          <div class="progress">
+            <div class="progress-bar progress-bar-animated" [ngStyle]="{ 'width': currentUpload?.progress + '%' }"></div>
+          </div>
+          <div class="progress-outer">
+            <div class="progress-inner" [style.width]="currentUpload?.progress + '%'">
+                {{currentUpload?.name}} | {{currentUpload?.progress}}%
             </div>
           </div>
-          <ion-item *ngIf="event.owner == userId">
-            <label><ion-note><ion-icon name="add"> </ion-icon> Add an image</ion-note></label>
-            <input type="file" (change)="detectFiles($event)" id="file-input" style="opacity: 0" #fileInp>
-          </ion-item>
+        </div>
+        <ion-item *ngIf="event.owner == userId">
+          <label><ion-note><ion-icon name="add"> </ion-icon> Add an image</ion-note></label>
+          <input type="file" (change)="detectFiles($event)" id="file-input" style="opacity: 0" #fileInp>
         </ion-item>
+      </ion-item>
     </ion-card-content>
   </ion-card>
 
@@ -58,12 +58,10 @@
 
   <div [ngSwitch]="eventTab">
     <ion-list *ngSwitchCase="'participants'">
-      <ion-item *ngFor="let participant of participants">
-        <ion-avatar *ngIf="participant.photoURL" item-start>
-          <img [src]="participant.photoURL">
-        </ion-avatar>
-        <ion-avatar *ngIf="!participant.photoURL" item-start>
-          <img src="https://s3.amazonaws.com/wll-community-production/images/no-avatar.png">
+      <ion-item *ngFor="let participant of participants | async">
+        <ion-avatar item-start>
+          <img *ngIf="participant.photoURL" [src]="participant.photoURL">
+          <img *ngIf="!participant.photoURL" src="./assets/imgs/no-avatar.png">
         </ion-avatar>
         <h2>{{participant.displayName}}</h2>
         <p>{{participant.email}}</p>
@@ -73,11 +71,9 @@
     <ion-list *ngSwitchCase="'comments'">
       <div *ngFor="let comment of comments | async; let last = last;" [ngClass]="{ 'comment-bottom-margin' : last }">
         <ion-item *ngIf="comment.user" (press)="pressComment(comment)">
-          <ion-avatar *ngIf="comment.user.photoURL" item-start>
-            <img [src]="comment.user.photoURL">
-          </ion-avatar>
-          <ion-avatar *ngIf="!comment.user.photoURL" item-start>
-            <img src="https://s3.amazonaws.com/wll-community-production/images/no-avatar.png">
+          <ion-avatar item-start>
+            <img *ngIf="comment.user.photoURL" [src]="comment.user.photoURL">
+            <img *ngIf="!comment.user.photoURL" src="./assets/imgs/no-avatar.png">            
           </ion-avatar>
           <h2>{{comment.user.displayName}} <span class="dot-separator"></span> {{comment.createdAt | timeAgo}}</h2>
           <p>{{comment.text}}</p>
