@@ -58,7 +58,7 @@
 
   <div [ngSwitch]="eventTab">
     <ion-list *ngSwitchCase="'participants'">
-      <ion-item *ngFor="let participant of participants | async">
+      <ion-item *ngFor="let participant of participants">
         <ion-avatar item-start>
           <img *ngIf="participant.photoURL" [src]="participant.photoURL">
           <img *ngIf="!participant.photoURL" src="./assets/imgs/no-avatar.png">
@@ -69,7 +69,7 @@
     </ion-list>
   
     <ion-list *ngSwitchCase="'comments'">
-      <div *ngFor="let comment of comments | async; let last = last;" [ngClass]="{ 'comment-bottom-margin' : last }">
+      <div *ngFor="let comment of comments; let last = last;" [ngClass]="{ 'comment-bottom-margin' : last }">
         <ion-item *ngIf="comment.user" (press)="pressComment(comment)">
           <ion-avatar item-start>
             <img *ngIf="comment.user.photoURL" [src]="comment.user.photoURL">
@@ -83,7 +83,7 @@
   </div>
 
   <form>
-    <ion-card *ngIf="enableCommentInput" class="add-comment-box">
+    <ion-card *ngIf="enableCommentInput && eventTab == 'comments'" class="add-comment-box">
       <div>
         <input class="add-comment-input" autocomplete="false" [(ngModel)]="newComment" #comment='ngModel' tabindex="1" placeholder="Add a comment" name="comment" minlength="3" maxlength="200" required autofocus>
         <button ion-button color="dark" clear (click)='createComment()' [disabled]="!comment.valid" tabindex="2" type="button" class="add-comment-button"><ion-icon name="checkmark"></ion-icon></button>

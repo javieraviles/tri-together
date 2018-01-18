@@ -13,8 +13,9 @@ export class CommentService {
   constructor(private afs: AngularFirestore, private eventService: EventService) { }
 
   getComments(eventId: string) {
-      return this.afs.collection<Comment>(`events/${eventId}/comments`, (ref) => ref.orderBy('createdAt', 'desc')).snapshotChanges().switchMap((actions) => {
-        let comments = actions.map((a) => {
+      let comments: Comment[] = [];
+      return this.afs.collection<Comment>(`events/${eventId}/comments`, (ref) => ref.orderBy('createdAt', 'asc')).snapshotChanges().switchMap((actions) => {
+        let newComments: Comment[] = actions.map((a) => {
           const data = a.payload.doc.data() as Comment;
           return { 
             id: a.payload.doc.id, 
@@ -24,11 +25,33 @@ export class CommentService {
             createdAt: data.createdAt 
           };
         });
-        for(let comment of comments) {
-          this.afs.doc<User>(`users/${comment.userId}`).valueChanges().take(1).subscribe( (user) => {
-            comment.user = user;
-          });
+        
+        for(let newComment of newComments) {
+          let isNewCommentInComments = false;
+          for (let comment of comments) {
+            if(comment.id === newComment.id) {
+              isNewCommentInComments = true;
+            }
+          }
+          if(!isNewCommentInComments) {
+            this.afs.doc<User>(`users/${newComment.userId}`).valueChanges().take(1).toPromise().then( (user) => {
+              newComment.user = user;
+              comments.push(newComment);
+            });
+          }
         }
+
+        comments.forEach( (comment, i) => {
+          let isCommentInNewComments = false;
+          for(let newComment of newComments) {
+            if(newComment.id === comment.id){
+              isCommentInNewComments = true;
+            }
+          }
+          if(!isCommentInNewComments) {
+            comments.splice(i,1);
+          }
+        });
         return Observable.of(comments);
       });
   }

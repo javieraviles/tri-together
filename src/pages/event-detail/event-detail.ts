@@ -23,22 +23,24 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: 'event-detail.html',
 })
 export class EventDetailPage {
-
+  firebaseObservableParticipants: any;
+  firebaseObservableComments: any;
   firebaseObservableParticipate: any;
   firebaseObservableEvent: any;
   firebaseObservableUploads: any;
   eventId = this.navParams.data.id;
   event: Event = new Event();
   participate: boolean = false;
-  participants: Observable<User[]>;
+  participants: User[];
   userId: string;
-  comments: Observable<Comment[]>;
+  comments: Comment[];
   newComment: string = "";
   eventTab = this.navParams.data.tab;
   eventAvatarUrl: string = "";
   selectedFiles: FileList;
   currentUpload: Upload;
   fileUploaded: Upload;
+  enableCommentInput: boolean = false;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
@@ -65,6 +67,8 @@ export class EventDetailPage {
     this.firebaseObservableParticipate.unsubscribe();
     this.firebaseObservableEvent.unsubscribe();
     this.firebaseObservableUploads.unsubscribe();
+    this.firebaseObservableParticipants.unsubscribe();
+    this.firebaseObservableComments.unsubscribe();
   }
 
   showAlert(title: string, msg: string) {
@@ -96,7 +100,9 @@ export class EventDetailPage {
   }
 
   getParticipants() {
-    this.participants = this.participantService.getParticipants(this.eventId);
+    this.firebaseObservableParticipants = this.participantService.getParticipants(this.eventId).subscribe((participants) => {
+      this.participants = participants;
+    });
   }
 
   getParticipation() {
@@ -114,10 +120,13 @@ export class EventDetailPage {
   }
 
   getComments() {
-    this.comments = this.commentService.getComments(this.eventId);
+    this.firebaseObservableComments = this.commentService.getComments(this.eventId).subscribe( (comments) => {
+      this.comments = comments;
+    });
   }
 
   createComment() {
+    this.enableCommentInput = false;
     this.commentService.createComment(this.eventId,this.userId,this.newComment).then( () => {
       this.newComment = "";
     });

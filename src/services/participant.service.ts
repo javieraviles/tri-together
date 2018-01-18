@@ -14,14 +14,34 @@ export class ParticipantService {
     constructor(private afs: AngularFirestore, private auth: AuthService, private eventService: EventService) { }
 
     getParticipants(eventId: string) {
-      
+      let users: User[] = [];
       return this.afs.collection<Participant>('participants', ref => ref.where('eventId', '==', eventId)).valueChanges().switchMap( (participants) => {
-        let users: User[] = [];
+
         for (let participant of participants) {
-          this.auth.getUser(participant.userId).take(1).subscribe((user) => {
-            users.push(user);
-          })
+          let isParticipantInUsers = false;
+          for (let user of users) {
+            if( user.uid === participant.userId) {
+              isParticipantInUsers = true;
+            }
+          }
+          if(!isParticipantInUsers) {
+            this.auth.getUser(participant.userId).take(1).toPromise().then( (user) => {
+              users.push(user);
+            })
+          }
         }
+        users.forEach( (user, i) => {
+          let isUserInParticipants = false;
+          for (let participant of participants) {
+            if(participant.userId === user.uid) {
+              isUserInParticipants = true;
+            }
+          }
+          if(!isUserInParticipants) {
+            users.splice(i,1)
+          }
+        });
+
         return Observable.of(users);
       });
       
