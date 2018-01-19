@@ -11,15 +11,14 @@ export class EventService {
   eventsCollection: AngularFirestoreCollection<Event>;
 
   constructor(private afs: AngularFirestore) {
-    //this.eventsCollection = this.afs.collection<Event>('events', (ref) => ref.where('start', '>', new Date()).orderBy('createdAt', 'desc'));
-    this.eventsCollection = this.afs.collection<Event>('events');
+    this.eventsCollection = this.afs.collection<Event>('events', (ref) => ref.where("start", ">=", new Date()).orderBy('start', 'asc'));
   }
 
   buildEventForFirebase(inEvent: Partial<Event>) {
     const event = {
       name: inEvent.name,
       discipline: inEvent.discipline, 
-      start: inEvent.start,
+      start: new Date(inEvent.start),
       owner: inEvent.owner,
       numberOfComments: inEvent.numberOfComments,
       numberOfParticipants: inEvent.numberOfParticipants,

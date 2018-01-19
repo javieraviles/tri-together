@@ -4,7 +4,7 @@ export class Event {
   place?: string;
   description?: string;
   discipline: string;
-  start: Date;
+  start: any;
   owner: string;
   numberOfComments: number;
   numberOfParticipants: number;

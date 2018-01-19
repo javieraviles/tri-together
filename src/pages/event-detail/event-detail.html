@@ -26,6 +26,7 @@
     <img *ngIf="fileUploaded" [src]="fileUploaded.url" (press)="pressFileUploaded(fileUploaded)">
     <ion-card-content>
       <p><strong>{{event.place}}</strong> {{event.description}}</p>
+      <ion-note float-right>{{owner}}</ion-note>
       <ion-item *ngIf="!fileUploaded">
         <div *ngIf="currentUpload">
           <div class="progress">
@@ -57,7 +58,7 @@
   </div>
 
   <div [ngSwitch]="eventTab">
-    <ion-list *ngSwitchCase="'participants'">
+    <ion-list *ngSwitchCase="'participants'" (swipe)="swipeEventTab($event, 'participants')">
       <ion-item *ngFor="let participant of participants">
         <ion-avatar item-start>
           <img *ngIf="participant.photoURL" [src]="participant.photoURL">
@@ -68,7 +69,7 @@
       </ion-item>
     </ion-list>
   
-    <ion-list *ngSwitchCase="'comments'">
+    <ion-list *ngSwitchCase="'comments'" (swipe)="swipeEventTab($event, 'comments')">
       <div *ngFor="let comment of comments; let last = last;" [ngClass]="{ 'comment-bottom-margin' : last }">
         <ion-item *ngIf="comment.user" (press)="pressComment(comment)">
           <ion-avatar item-start>

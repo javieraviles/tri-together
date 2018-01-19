@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding (swipe)="swipeMainTab($event)">
   <div *ngFor="let event of events"> 
     <ion-card>
       <ion-item>

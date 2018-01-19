@@ -3,7 +3,7 @@
   <ion-navbar color="primary">
     <ion-title>{{title}}</ion-title>
     <ion-buttons end>
-      <button *ngIf="name" ion-button clear (click)='saveEvent()' [disabled]="!name.valid" tabindex="6">Save</button>
+      <button *ngIf="name" ion-button clear (click)='saveEvent()' [disabled]="!name.valid||!discipline.valid||!start.valid" tabindex="6">Save</button>
     </ion-buttons>
   </ion-navbar>
 
@@ -36,14 +36,14 @@
     <ion-item>
       <ion-label floating>Discipline</ion-label>
       <ion-select name="discipline" [(ngModel)]="event.discipline" 
-        tabindex="4" required>
+        tabindex="4" #discipline='ngModel' required>
         <ion-option *ngFor="let discipline of disciplines" [value]="discipline.value">{{ discipline.label }}</ion-option>
       </ion-select>
     </ion-item>
 
     <ion-item>
-      <ion-label floating>Start DateTime</ion-label>
-      <ion-datetime displayFormat="DD MMM, YYYY HH:mm" tabindex="5" [(ngModel)]="event.start" name="start" required autocomplete="false"></ion-datetime>
+      <ion-label floating>Start DateTime (GMT)</ion-label>
+      <ion-datetime displayFormat="DD MMM, YYYY HH:mm" tabindex="5" [(ngModel)]="event.start" name="start" #start='ngModel' required autocomplete="false"></ion-datetime>
     </ion-item>
 
   </ion-list>

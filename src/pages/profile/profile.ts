@@ -32,6 +32,12 @@ export class ProfilePage {
       this.firebaseObservableUploads.unsubscribe();
     }
 
+    swipeMainTab(event: any): void {
+      if(event.direction === 4) {
+        this.navCtrl.parent.select(0);
+      }
+    }
+
     showAlert(title: string, msg: string) {
       let alert = this.alertCtrl.create({
         title: title,

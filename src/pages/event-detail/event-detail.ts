@@ -41,6 +41,7 @@ export class EventDetailPage {
   currentUpload: Upload;
   fileUploaded: Upload;
   enableCommentInput: boolean = false;
+  owner: string = "";
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
@@ -60,7 +61,6 @@ export class EventDetailPage {
     this.getComments();
     this.getUploads();
     this.getParticipation();
-
   }
 
   ionViewWillUnload() {
@@ -80,9 +80,24 @@ export class EventDetailPage {
     alert.present();
   }
 
+  swipeEventTab(event: any, currentTab: string): void {
+    if(currentTab === 'participants' && event.direction === 2) {
+      this.eventTab = 'comments';
+    } else if (currentTab === 'comments' && event.direction === 4) {
+      this.eventTab = 'participants';
+    }
+  }
+
+  getOwner(userId: string): void {
+    this.auth.getUser(userId).take(1).toPromise().then( (user) => {
+      this.owner = user.displayName;
+    });
+  }
+
   getEvent(): void {
     this.firebaseObservableEvent = this.eventService.getEvent(this.eventId).valueChanges().subscribe( (event) => {
       if(Boolean(event)){
+        this.getOwner(event.owner);
         this.event = event;
         this.eventAvatarUrl = "./assets/imgs/" + this.event.discipline + ".png";
       } else {

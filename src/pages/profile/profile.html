@@ -6,7 +6,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding  (swipe)="swipeMainTab($event)">
   <ion-card *ngIf="auth.user as user">
     <ion-item>
       <ion-avatar (press)="pressProfilePic()" *ngIf="user.photoURL" item-start>

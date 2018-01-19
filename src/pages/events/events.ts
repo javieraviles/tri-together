@@ -56,6 +56,12 @@ export class EventsPage {
     }
   }
 
+  swipeMainTab(event: any): void {
+    if(event.direction === 2) {
+      this.navCtrl.parent.select(1);
+    }
+  }
+
   createEvent() {
     this.navCtrl.push(EventFormPage);
   }

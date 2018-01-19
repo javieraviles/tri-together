@@ -40,8 +40,11 @@ export class EventFormPage {
         this.event = navParams.get('event');
         this.eventId = navParams.get('eventId');
         this.originalEvent = JSON.parse(JSON.stringify(this.event));
+        this.event.start = new Date(this.event.start).toISOString();
         this.title = "Edit event";
       }
+
+      
   }
 
   ionViewWillLeave() {
@@ -51,7 +54,7 @@ export class EventFormPage {
   }
 
   saveEvent() {
-
+    
     if(!this.editMode) {
       this.event.owner = this.userId;
       this.eventService.createEvent(this.event).then( (event) => {
