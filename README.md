@@ -1,5 +1,5 @@
 # triathlon-club
-Angular 5 + Firebase + Ionic3 | Tri Together: Find other triathletes to train with. Live demo: http://www.clubimpulsotri.es/nueva-app
+Angular 5 + Firebase + Ionic3 | Tri Together: Find other triathletes to train with. Live demo: http://tritogether.net/
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.4.
 
 ## Development server
